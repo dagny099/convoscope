@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Other Folders
+Tmp**
+conversation_history/*
+
+# Virtual environment
+.st*/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# PyCharm specific
+.idea/
+
+# VS Code specific
+.vscode/
+
+# Streamlit cache
+.streamlit/
+# Comment out the line below if you want to include config.toml and secrets.toml
+# .streamlit/config.toml
+# .streamlit/secrets.toml
+
+# MacOS specific
+.DS_Store
+
+# Ignore database files
+*.db
+*.sqlite3
+
+

@@ -20,7 +20,7 @@ import markdown
 
 # From the official OpenAI package
 import openai as OfficialOpenAI
-OfficialOpenAI.api_key = st.secrets["openai_key"]
+OfficialOpenAI.api_key = os.getenv("OPENAI_API_KEY")
 client = OfficialOpenAI
 
 save_convo_path = 'conversation_history'
@@ -369,7 +369,7 @@ async def stream_openai_response(settings, question):
     # st.chat_message("user").markdown(question)
 
     # Create the LLM instance
-    llm = OpenAI(api_key = st.secrets["openai_key"], model=settings["selected_model"], temperature=settings["temperature"])  
+    llm = OpenAI(api_key = os.getenv("OPENAI_API_KEY"), model=settings["selected_model"], temperature=settings["temperature"])  
 
     # Stream the chat response from the OpenAI model
     response = llm.stream_chat(messages)

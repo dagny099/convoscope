@@ -37,22 +37,21 @@ Welcome to a whimsical yet powerful chat interface that lets you dive down the A
 
 ### Prerequisites
 ```bash
-pip install streamlit
-pip install llama_index
-pip install openai
-pip install markdown
+pip install -r requirements.txt
 ```
 
 ### Configuration
-1. Create a `secrets.toml` file in the `.streamlit` directory
-2. Add your OpenAI API key:
-```toml
-openai_key = "your-api-key-here"
+Ensure your environment has a variable set for each LLM provider, e.g. OPENAI_API_KEY
+
+**You config is correct if executing this command displays your API key:**:    
+
+```bash
+echo $OPENAI_API_KEY
 ```
 
 ### Running the Application
 ```bash
-streamlit run run_chat_forLLM.py
+streamlit run run_chat.py
 ```
 
 ## 🎨 Interface Sections
