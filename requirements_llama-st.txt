@@ -137,7 +137,6 @@ tinysegmenter==0.3
 tldextract==5.1.2
 tokenizers==0.19.1
 toml==0.10.2
-torch==2.4.0
 tornado==6.4.1
 tqdm==4.66.5
 transformers==4.44.2
