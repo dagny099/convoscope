@@ -1,0 +1,165 @@
+site_name: "Convoscope: Multi-Provider AI Chat Platform"
+site_description: "Professional portfolio project demonstrating full-stack development, testing practices, and LLM integration"
+site_author: "Data Science Portfolio Project"
+repo_url: "https://github.com/user/convoscope"
+repo_name: "convoscope"
+
+theme:
+  name: material
+  palette:
+    # Professional color scheme for data science portfolio
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue grey
+      accent: teal
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+    - toc.integrate
+  
+  icon:
+    repo: fontawesome/brands/github
+    tag:
+      python: fontawesome/brands/python
+      testing: material/test-tube
+      architecture: material/sitemap
+
+nav:
+  - Home: index.md
+  - Project Overview:
+    - Problem Statement: overview/problem-statement.md
+    - Technical Approach: overview/technical-approach.md
+    - Key Achievements: overview/achievements.md
+    - Portfolio Impact: overview/portfolio-impact.md
+  - Architecture & Design:
+    - System Architecture: architecture/system-overview.md
+    - Data Flow: architecture/data-flow.md
+    - LLM Service Design: architecture/llm-service.md
+    - Testing Strategy: architecture/testing.md
+    - Error Handling: architecture/error-handling.md
+  - Implementation Guide:
+    - Installation & Setup: guides/installation.md
+    - Configuration: guides/configuration.md
+    - Usage Examples: guides/usage.md
+    - Multi-Provider Setup: guides/multi-provider.md
+  - API Reference:
+    - LLM Service: api/llm-service.md
+    - Conversation Manager: api/conversation-manager.md
+    - Utilities: api/utilities.md
+    - Error Classes: api/errors.md
+  - Development Process:
+    - Requirements Analysis: development/requirements.md
+    - Modular Refactoring: development/refactoring.md
+    - Testing Implementation: development/testing.md
+    - Code Quality Metrics: development/metrics.md
+  - Before vs After:
+    - Architecture Comparison: comparison/architecture.md
+    - Code Quality Analysis: comparison/quality.md
+    - Performance Improvements: comparison/performance.md
+    - Maintainability Gains: comparison/maintainability.md
+
+plugins:
+  - search:
+      lang: en
+  - mermaid2:
+      version: 10.6.1
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: true
+            members_order: source
+            group_by_category: true
+            show_category_heading: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: timeago
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+      cache_safe: true
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: [docs]
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - toc:
+      permalink: true
+      title: On this page
+  - tables
+  - footnotes
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/user/convoscope
+  tags:
+    Python: python
+    Testing: testing
+    Architecture: architecture
+    LLM: material/robot
+    Streamlit: material/web
+  version:
+    provider: mike
+    default: stable
+  analytics:
+    provider: google
+    property: G-XXXXXXXXXX  # Replace with actual GA4 property ID
+
+extra_css:
+  - assets/custom.css
+
+copyright: |
+  Portfolio Project &copy; 2025 - Professional Development Showcase
