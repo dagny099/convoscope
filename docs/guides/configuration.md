@@ -14,7 +14,7 @@ Create a `.env` file in your project root with the following variables:
 # LLM Provider API Keys (at least one required)
 OPENAI_API_KEY=sk-your-openai-key-here
 ANTHROPIC_API_KEY=sk-ant-api03-your-anthropic-key-here  
-GOOGLE_API_KEY=AIza-your-google-api-key-here
+GEMINI_API_KEY=AIza-your-google-api-key-here
 
 # Application Settings (optional)
 DEFAULT_LLM_PROVIDER=openai
@@ -58,7 +58,7 @@ ALLOWED_FILE_EXTENSIONS=.json,.txt,.md
     
     **Google Configuration:**
     ```bash
-    GOOGLE_API_KEY=AIzaSyAbc123...
+    GEMINI_API_KEY=AIzaSyAbc123...
     GOOGLE_PROJECT_ID=my-project-id  # Optional: For advanced features
     ```
 
@@ -151,7 +151,7 @@ PROVIDER_CONFIGS = {
     
     "google": ProviderConfig(
         name="google",
-        api_key_env="GOOGLE_API_KEY", 
+        api_key_env="GEMINI_API_KEY", 
         models=["gemini-pro", "gemini-1.5-pro"],
         default_model="gemini-pro",
         priority=3
@@ -612,7 +612,7 @@ def validate_configuration() -> Tuple[bool, List[str]]:
     warnings = []
     
     # Check required environment variables
-    required_vars = ["OPENAI_API_KEY", "ANTHROPIC_API_KEY", "GOOGLE_API_KEY"]
+    required_vars = ["OPENAI_API_KEY", "ANTHROPIC_API_KEY", "GEMINI_API_KEY"]
     available_providers = []
     
     for var in required_vars:

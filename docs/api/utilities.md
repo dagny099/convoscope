@@ -582,4 +582,4 @@ These utilities provide the foundational building blocks for reliable, secure, a
 
 ---
 
-*Next: [Implementation Guides](../guides/README.md) - Practical usage examples and integration patterns*
+*Comming Mid Sept 2025: [Implementation Guides] - Practical usage examples and integration patterns*

@@ -205,7 +205,7 @@ mkdocs serve
 # Required: At least one provider
 OPENAI_API_KEY=sk-your-openai-key-here
 ANTHROPIC_API_KEY=sk-ant-api03-your-anthropic-key-here  
-GOOGLE_API_KEY=AIza-your-google-api-key-here
+GEMINI_API_KEY=AIza-your-google-api-key-here
 
 # Optional: Application settings
 DEFAULT_LLM_PROVIDER=openai

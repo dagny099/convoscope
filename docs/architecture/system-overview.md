@@ -5,39 +5,51 @@
 Convoscope implements a **layered service architecture** that separates concerns and enables maintainability, testability, and scalability. The system is designed around the principle of **provider abstraction** with **intelligent fallback mechanisms**.
 
 ```mermaid
-architecture-beta
-    group frontend(cloud)[Frontend Layer]
-    group services(cloud)[Service Layer] 
-    group storage(database)[Storage Layer]
-    group external(cloud)[External APIs]
-
-    service streamlit(internet)[Streamlit UI] in frontend
-    service session(server)[Session Management] in frontend
+flowchart TB
+    subgraph Frontend ["🎨 Frontend Layer"]
+        UI["📱 Streamlit UI"]
+        SESSION["📋 Session Management"]
+    end
     
-    service llm_service(server)[LLM Service] in services
-    service conv_manager(server)[Conversation Manager] in services
-    service error_handler(server)[Error Handler] in services
+    subgraph Services ["⚙️ Service Layer"]
+        LLM["🤖 LLM Service"]
+        CONV["💬 Conversation Manager"]
+        ERROR["⚠️ Error Handler"]
+    end
     
-    service file_storage(disk)[File Storage] in storage
-    service conversation_db(database)[Conversation Data] in storage
+    subgraph Storage ["💾 Storage Layer"]
+        FILES["📁 File Storage"]
+        CONVDB["📊 Conversation Data"]
+    end
     
-    service openai(internet)[OpenAI API] in external
-    service anthropic(internet)[Anthropic API] in external
-    service google(internet)[Google Gemini] in external
-
-    streamlit:R -- L:session
-    streamlit:D -- U:llm_service
-    streamlit:D -- U:conv_manager
+    subgraph External ["🌐 External APIs"]
+        OPENAI["🔥 OpenAI API"]
+        ANTHROPIC["🧠 Anthropic API"]
+        GOOGLE["🌟 Google Gemini"]
+    end
     
-    llm_service:R -- L:error_handler
-    llm_service:D -- U:openai
-    llm_service:D -- U:anthropic
-    llm_service:D -- U:google
+    UI <--> SESSION
+    UI --> LLM
+    UI --> CONV
     
-    conv_manager:D -- U:file_storage
-    conv_manager:D -- U:conversation_db
+    LLM <--> ERROR
+    LLM --> OPENAI
+    LLM --> ANTHROPIC
+    LLM --> GOOGLE
     
-    session:D -- U:conv_manager
+    CONV --> FILES
+    CONV --> CONVDB
+    SESSION --> CONV
+    
+    classDef frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef services fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef storage fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    classDef external fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    
+    class UI,SESSION frontend
+    class LLM,CONV,ERROR services
+    class FILES,CONVDB storage
+    class OPENAI,ANTHROPIC,GOOGLE external
 ```
 
 ## Architectural Principles

@@ -500,4 +500,4 @@ This data flow architecture ensures reliable, performant, and observable request
 
 ---
 
-*Next: [LLM Service Design](llm-service.md) - Deep dive into multi-provider integration architecture*
+*Next: [LLM Service Design](api/llm-service.md) - Deep dive into multi-provider integration architecture*

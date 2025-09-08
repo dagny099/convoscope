@@ -54,7 +54,13 @@ nav:
     - Data Flow: architecture/data-flow.md
   - Implementation Guide:
     - Installation & Setup: guides/installation.md
+    - Multi-Provider Setup: guides/multi-provider-setup.md
     - Configuration: guides/configuration.md
+    - Provider Guides:
+      - Overview: guides/providers/index.md
+      - OpenAI Setup: guides/providers/openai-setup.md
+      - Anthropic Setup: guides/providers/anthropic-setup.md
+      - Google Gemini Setup: guides/providers/google-gemini-setup.md
     - Advanced Usage: guides/advanced-usage.md
   - API Reference:
     - LLM Service: api/llm-service.md

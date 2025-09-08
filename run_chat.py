@@ -18,7 +18,10 @@ import asyncio
 import random
 import markdown
 
-# From the official OpenAI package
+# Import the multi-provider LLM service
+from src.services.llm_service import LLMService, LLMServiceError
+
+# From the official OpenAI package (for topic extraction only)
 import openai as OfficialOpenAI
 OfficialOpenAI.api_key = os.getenv("OPENAI_API_KEY")
 client = OfficialOpenAI
@@ -31,11 +34,30 @@ if not os.path.exists(save_convo_path):
 if 'num_updates' not in st.session_state:
     st.session_state.num_updates = 0
 
+# Initialize the multi-provider LLM service
+if 'llm_service' not in st.session_state:
+    st.session_state.llm_service = LLMService()
+
+# Get providers from the LLM service for dynamic updates
+def get_providers_dict():
+    """Get available providers and models from the LLM service."""
+    service = st.session_state.llm_service
+    providers = {}
+    
+    for provider_name, provider_config in service.PROVIDERS.items():
+        if provider_config.available:
+            providers[provider_name] = provider_config.models
+        else:
+            providers[f"{provider_name} (API key needed)"] = provider_config.models
+    
+    return providers
+
+# Legacy provider dict (kept for compatibility, but will be replaced by dynamic version)
 providers = {
-    'openAI': [ "gpt-3.5-turbo", "gpt-4", "davinci"],  #"gpt-3.5-turbo-instruct", 
-    'anthropic - Coming Soon': ["claude-2.1", "claude-3-opus-20240229", "claude-3-sonnet-20240229",  "claude-3-haiku-20240307"],
-    'llama- Coming Soon': ["gemma2", "llama3.1", "codellama", "llama2-uncensored", "neural-chat", "mistral"]
-    }
+    'openai': ["gpt-4o-mini", "gpt-4o", "gpt-3.5-turbo", "gpt-4-turbo"],
+    'anthropic': ["claude-3-5-sonnet-20241022", "claude-3-haiku-20240307"],
+    'google': ["gemini-pro", "gemini-1.5-pro"]
+}
 
 chat_history_options_labels = ["Load a conversation? 󠀠 󠀠:file_folder:", "Reload last auto-save? 󠀠 󠀠:relieved:", "Start anew 󠀠 󠀠:city_sunrise:"]
 chat_history_options_captions = ["Get a list of saved conversations.", "Restore session before page reloaded.", "Reset the conversation." ]
@@ -301,21 +323,70 @@ def sidebar_configuration():
         value = st.session_state.temperature
     st.sidebar.slider("Predictablility of Responses (0: consistent, 1: varied)", min_value=0.0, max_value=1.0, step=0.1, format="%.1f", value=value, key="temperature")
 
-    # LLM Provider selection
+    # LLM Provider selection - use dynamic providers
+    dynamic_providers = get_providers_dict()
+    available_provider_names = list(dynamic_providers.keys())
+    
+    # Set default provider to first available one
     if "llm_provider" not in st.session_state:
-        value = get_index(list(providers.keys()), 'openAI')
-    else:
-        value = get_index(list(providers.keys()), st.session_state.llm_provider)
-    st.sidebar.selectbox(label="Choose a provider", options=list(providers.keys()), index=value, key="llm_provider")
-
-    # Model selection - always default to the first model in the list
-    if "selected_model" not in st.session_state:
-        value = 0
-    elif get_index(providers[st.session_state.llm_provider], st.session_state.selected_model) is None:
-        value = 0
-    else:
-        value = get_index(providers[st.session_state.llm_provider], st.session_state.selected_model)
-    st.sidebar.selectbox(label="Choose a model", options=providers[st.session_state.llm_provider], index=value, key="selected_model")
+        # Try to default to 'openai' if available, otherwise first available
+        if 'openai' in dynamic_providers:
+            st.session_state.llm_provider = 'openai'
+        else:
+            # Get the clean provider name (remove "(API key needed)" suffix)
+            clean_names = [name.split(' (')[0] for name in available_provider_names]
+            st.session_state.llm_provider = clean_names[0] if clean_names else 'openai'
+    
+    # Get current provider index
+    clean_current_provider = st.session_state.llm_provider.split(' (')[0]
+    provider_index = 0
+    for i, provider_name in enumerate(available_provider_names):
+        if provider_name.startswith(clean_current_provider):
+            provider_index = i
+            break
+    
+    selected_provider_display = st.sidebar.selectbox(
+        label="Choose a provider", 
+        options=available_provider_names, 
+        index=provider_index, 
+        key="provider_display"
+    )
+    
+    # Clean the provider name for internal use
+    st.session_state.llm_provider = selected_provider_display.split(' (')[0]
+    
+    # Show provider status
+    llm_service = st.session_state.llm_service
+    if st.session_state.llm_provider in llm_service.PROVIDERS:
+        provider_config = llm_service.PROVIDERS[st.session_state.llm_provider]
+        if provider_config.available:
+            st.sidebar.success(f"✅ {st.session_state.llm_provider.title()} is ready")
+        else:
+            st.sidebar.warning(f"⚠️ {st.session_state.llm_provider.title()} needs API key: {provider_config.env_key}")
+    
+    # Model selection - get models for the selected provider
+    available_models = llm_service.get_available_models(st.session_state.llm_provider)
+    if not available_models:
+        available_models = dynamic_providers.get(selected_provider_display, ["No models available"])
+    
+    # Set default model - prioritize gpt-4o-mini for OpenAI
+    if "selected_model" not in st.session_state or st.session_state.selected_model not in available_models:
+        if st.session_state.llm_provider == 'openai' and 'gpt-4o-mini' in available_models:
+            st.session_state.selected_model = 'gpt-4o-mini'
+        else:
+            st.session_state.selected_model = available_models[0] if available_models else "No models available"
+    
+    # Model selection dropdown
+    model_index = 0
+    if st.session_state.selected_model in available_models:
+        model_index = available_models.index(st.session_state.selected_model)
+    
+    st.sidebar.selectbox(
+        label="Choose a model", 
+        options=available_models, 
+        index=model_index, 
+        key="selected_model"
+    )
 
     # ------------ INTERACTIVE ELEMENTS ON THE PAGE ------------  #
     st.sidebar.markdown("<hr>", unsafe_allow_html=True)
@@ -352,44 +423,94 @@ def sidebar_configuration():
     return chat_settings
 
 
-async def stream_openai_response(settings, question):
+def get_multi_provider_response(settings, question):
     """
-    Stream the response from the OpenAI model based on the conversation history.
+    Get response from the selected LLM provider using the multi-provider service.
     """
-    # Start with the system prompt
-    messages = [ChatMessage(role="system", content=settings['priming_text'])]
-
+    # Build messages for the LLM service format
+    messages = [{"role": "system", "content": settings['priming_text']}]
+    
     # Append previous conversation history
     for chat in st.session_state.conversation:
-        messages.append(ChatMessage(role="user", content=chat['user']))
-        messages.append(ChatMessage(role="assistant", content=chat['ai']))
-
+        messages.append({"role": "user", "content": chat['user']})
+        messages.append({"role": "assistant", "content": chat['ai']})
+    
     # Add the new user question
-    messages.append(ChatMessage(role="user", content=question))
-    # st.chat_message("user").markdown(question)
+    messages.append({"role": "user", "content": question})
+    
+    try:
+        # Use the multi-provider service
+        llm_service = st.session_state.llm_service
+        response = llm_service.get_completion(
+            provider=settings["llm_provider"], 
+            model=settings["selected_model"],
+            messages=messages,
+            temperature=settings["temperature"]
+        )
+        return response
+        
+    except LLMServiceError as e:
+        st.error(f"LLM Service Error: {str(e)}")
+        
+        # Try fallback if primary provider fails
+        try:
+            available_providers = llm_service.get_available_providers()
+            if len(available_providers) > 1:
+                # Find a different available provider
+                fallback_provider = None
+                fallback_model = None
+                
+                for provider_name, provider_config in available_providers.items():
+                    if provider_name != settings["llm_provider"]:
+                        fallback_provider = provider_name
+                        fallback_model = provider_config.models[0]  # Use first available model
+                        break
+                
+                if fallback_provider:
+                    st.warning(f"Falling back to {fallback_provider} with {fallback_model}")
+                    response = llm_service.get_completion(
+                        provider=fallback_provider,
+                        model=fallback_model,
+                        messages=messages,
+                        temperature=settings["temperature"]
+                    )
+                    return response
+                    
+        except LLMServiceError as fallback_error:
+            st.error(f"Fallback also failed: {str(fallback_error)}")
+        
+        return "I'm sorry, I'm having trouble connecting to the AI service right now. Please check your API keys and try again."
+    
+    except Exception as e:
+        st.error(f"Unexpected error: {str(e)}")
+        return "I'm sorry, something unexpected went wrong. Please try again."
 
-    # Create the LLM instance
-    llm = OpenAI(api_key = os.getenv("OPENAI_API_KEY"), model=settings["selected_model"], temperature=settings["temperature"])  
 
-    # Stream the chat response from the OpenAI model
-    response = llm.stream_chat(messages)
-
-    # Placeholder for streaming output
+async def stream_openai_response(settings, question):
+    """
+    Legacy function - now routes to multi-provider service.
+    Kept for backward compatibility but updated to use new service.
+    """
+    # Get the response using the multi-provider service
+    response_text = get_multi_provider_response(settings, question)
+    
+    # Placeholder for streaming output (simulate streaming for UI consistency)
     output_placeholder2 = st.empty()
-
-    # Initialize a variable to store the partial response
+    
+    # Simulate streaming by displaying the response progressively
     partial_response = ""
-
-    # Loop through streaming chunks
-    for chunk in response:
-        partial_response += chunk.delta
+    for char in response_text:
+        partial_response += char
         
         # Update the session state conversation in real-time
         st.session_state.conversation[-1]['ai'] = partial_response
-
+        
         # Update the UI
         output_placeholder2.chat_message("ai").markdown(partial_response)
-
+        
+        # Small delay to simulate streaming (optional)
+        await asyncio.sleep(0.01)
+    
     return partial_response
 
 

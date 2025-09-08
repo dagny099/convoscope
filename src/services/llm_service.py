@@ -33,7 +33,7 @@ class LLMService:
     PROVIDERS = {
         'openai': LLMProvider(
             name='openai',
-            models=['gpt-4o', 'gpt-3.5-turbo', 'gpt-4-turbo'],
+            models=['gpt-4o-mini', 'gpt-4o', 'gpt-3.5-turbo', 'gpt-4-turbo'],
             env_key='OPENAI_API_KEY'
         ),
         'anthropic': LLMProvider(
@@ -43,8 +43,8 @@ class LLMService:
         ),
         'google': LLMProvider(
             name='google',
-            models=['gemini-pro', 'gemini-1.5-pro'],
-            env_key='GOOGLE_API_KEY'
+            models=['gemini-1.5-pro', 'gemini-pro'],
+            env_key='GEMINI_API_KEY'
         )
     }
     
@@ -116,7 +116,13 @@ class LLMService:
                 f"Available models: {available_models}"
             )
         
-        model_name = f"{provider}/{model}"
+        # Handle different provider model naming conventions
+        if provider == 'google':
+            # Google AI Studio uses 'gemini/' prefix (not 'google/')
+            model_name = f"gemini/{model}"
+        else:
+            # Other providers use provider/model format
+            model_name = f"{provider}/{model}"
         
         for attempt in range(max_retries):
             try:
@@ -160,7 +166,7 @@ class LLMService:
         self,
         messages: List[Dict[str, str]],
         primary_provider: str = "openai",
-        primary_model: str = "gpt-3.5-turbo",
+        primary_model: str = "gpt-4o-mini",
         fallback_provider: str = "anthropic", 
         fallback_model: str = "claude-3-haiku-20240307",
         temperature: float = 0.7

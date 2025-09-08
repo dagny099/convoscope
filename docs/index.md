@@ -6,24 +6,35 @@
 ## Project at a Glance
 
 ```mermaid
-architecture-beta
-    group frontend(cloud)[Frontend Layer]
-    group backend(cloud)[Backend Services] 
-    group external(cloud)[External APIs]
-
-    service streamlit(internet)[Streamlit UI] in frontend
-    service llm_service(server)[LLM Service] in backend
-    service conv_manager(server)[Conversation Manager] in backend
+flowchart TB
+    subgraph Frontend ["🎨 Frontend Layer"]
+        UI["📱 Streamlit UI"]
+    end
     
-    service openai(internet)[OpenAI API] in external
-    service anthropic(internet)[Anthropic API] in external
-    service google(internet)[Google Gemini] in external
-
-    streamlit:D -- U:llm_service
-    streamlit:D -- U:conv_manager
-    llm_service:D -- U:openai
-    llm_service:D -- U:anthropic
-    llm_service:D -- U:google
+    subgraph Backend ["⚙️ Backend Services"]
+        LLM["🤖 LLM Service"]
+        CONV["💬 Conversation Manager"]
+    end
+    
+    subgraph External ["🌐 External APIs"]
+        OPENAI["🔥 OpenAI API"]
+        ANTHROPIC["🧠 Anthropic API"]
+        GOOGLE["🌟 Google Gemini"]
+    end
+    
+    UI --> LLM
+    UI --> CONV
+    LLM --> OPENAI
+    LLM --> ANTHROPIC
+    LLM --> GOOGLE
+    
+    classDef frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    classDef backend fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef external fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
+    
+    class UI frontend
+    class LLM,CONV backend
+    class OPENAI,ANTHROPIC,GOOGLE external
 ```
 
 ## Technical Highlights

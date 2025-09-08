@@ -63,7 +63,7 @@ Add your API keys to `.env`:
 # Required: At least one provider API key
 OPENAI_API_KEY=sk-your-openai-key-here
 ANTHROPIC_API_KEY=sk-ant-api03-your-anthropic-key-here
-GOOGLE_API_KEY=your-google-api-key-here
+GEMINI_API_KEY=your-google-api-key-here
 
 # Optional: Application configuration
 DEFAULT_LLM_PROVIDER=openai
@@ -151,7 +151,7 @@ Each LLM provider requires different setup:
     
     **2. Set Environment Variable:**
     ```bash
-    export GOOGLE_API_KEY="AIza-your-key-here"
+    export GEMINI_API_KEY="AIza-your-key-here"
     ```
     
     **3. Verify Setup:**

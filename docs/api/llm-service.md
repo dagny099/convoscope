@@ -55,7 +55,7 @@ The service currently supports three major LLM providers:
     - `gemini-pro` - Google's flagship model
     - `gemini-1.5-pro` - Enhanced version with multimodal capabilities
     
-    **Environment Variable:** `GOOGLE_API_KEY`
+    **Environment Variable:** `GEMINI_API_KEY`
     
     ```python
     # Check provider availability
@@ -259,7 +259,7 @@ except LLMServiceError as e:
 # Required environment variables
 export OPENAI_API_KEY="sk-..."
 export ANTHROPIC_API_KEY="sk-ant-api03-..."
-export GOOGLE_API_KEY="AIza..."
+export GEMINI_API_KEY="AIza..."
 
 # Optional configuration
 export DEFAULT_LLM_PROVIDER="openai"
