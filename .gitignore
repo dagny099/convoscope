@@ -34,3 +34,20 @@ conversation_history/*
 
 
 .venv
+
+# Generated documentation
+site/
+
+# Development assets and screenshots
+demo_screenshots/
+
+# Development planning and WIP files
+*-plan-*.md
+*-roadmap-*.md
+*-prompt-*.md
+*_DOCS_SUMMARY.md
+*_SUMMARY.md
+strategic-*.md
+integration_testing_*.md
+capture_demo.py
+test_multi_provider.py

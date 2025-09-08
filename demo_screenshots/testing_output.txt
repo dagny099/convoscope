@@ -1,8 +1,0 @@
-Placeholder for testing_output.png
-
-Description: Test suite execution showing 56 passing tests
-
-To capture this screenshot:
-1. Ensure Streamlit app is running: streamlit run run_chat.py
-2. Navigate to appropriate section
-3. Capture screenshot and save as testing_output.png

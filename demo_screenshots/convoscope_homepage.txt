@@ -1,8 +1,0 @@
-Placeholder for convoscope_homepage.png
-
-Description: Main chat interface showing clean UI design and provider selection
-
-To capture this screenshot:
-1. Ensure Streamlit app is running: streamlit run run_chat.py
-2. Navigate to appropriate section
-3. Capture screenshot and save as convoscope_homepage.png

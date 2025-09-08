@@ -1,8 +1,0 @@
-Placeholder for architecture_diagram.png
-
-Description: System architecture visualization from MkDocs documentation
-
-To capture this screenshot:
-1. Ensure Streamlit app is running: streamlit run run_chat.py
-2. Navigate to appropriate section
-3. Capture screenshot and save as architecture_diagram.png
