@@ -1,0 +1,71 @@
+/Users/bhs/.pyenv/versions/3.12.2/lib/python3.12/site-packages/pytest_asyncio/plugin.py:211: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts ==============================
+platform darwin -- Python 3.12.2, pytest-8.3.5, pluggy-1.5.0 -- /Users/bhs/.pyenv/versions/3.12.2/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/bhs/PROJECTS/convoscope
+configfile: pytest.ini
+plugins: asyncio-1.1.0, anyio-4.10.0, playwright-0.7.0, base-url-2.1.0
+asyncio: mode=Mode.STRICT, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 56 items
+
+tests/test_conversation_manager.py::TestConversationManager::test_initialization PASSED [  1%]
+tests/test_conversation_manager.py::TestConversationManager::test_validate_conversation_valid PASSED [  3%]
+tests/test_conversation_manager.py::TestConversationManager::test_validate_conversation_invalid PASSED [  5%]
+tests/test_conversation_manager.py::TestConversationManager::test_sanitize_filename PASSED [  7%]
+tests/test_conversation_manager.py::TestConversationManager::test_save_conversation_success PASSED [  8%]
+tests/test_conversation_manager.py::TestConversationManager::test_save_conversation_invalid_data PASSED [ 10%]
+tests/test_conversation_manager.py::TestConversationManager::test_save_conversation_with_backup PASSED [ 12%]
+tests/test_conversation_manager.py::TestConversationManager::test_load_conversation_success PASSED [ 14%]
+tests/test_conversation_manager.py::TestConversationManager::test_load_conversation_not_found PASSED [ 16%]
+tests/test_conversation_manager.py::TestConversationManager::test_load_conversation_invalid_json PASSED [ 17%]
+tests/test_conversation_manager.py::TestConversationManager::test_load_conversation_invalid_structure PASSED [ 19%]
+tests/test_conversation_manager.py::TestConversationManager::test_list_conversations PASSED [ 21%]
+tests/test_conversation_manager.py::TestConversationManager::test_list_conversations_include_auto_save PASSED [ 23%]
+tests/test_conversation_manager.py::TestConversationManager::test_delete_conversation_success PASSED [ 25%]
+tests/test_conversation_manager.py::TestConversationManager::test_delete_conversation_not_found PASSED [ 26%]
+tests/test_conversation_manager.py::TestConversationManager::test_auto_save_conversation PASSED [ 28%]
+tests/test_conversation_manager.py::TestConversationManager::test_get_conversation_stats PASSED [ 30%]
+tests/test_conversation_manager.py::TestConversationManager::test_get_conversation_stats_not_found PASSED [ 32%]
+tests/test_conversation_manager.py::TestConversationManager::test_directory_creation_error PASSED [ 33%]
+tests/test_conversation_manager.py::TestConversationManager::test_get_conversation_path PASSED [ 35%]
+tests/test_llm_service.py::TestLLMService::test_provider_initialization PASSED [ 37%]
+tests/test_llm_service.py::TestLLMService::test_check_provider_availability_with_key PASSED [ 39%]
+tests/test_llm_service.py::TestLLMService::test_check_provider_availability_without_key PASSED [ 41%]
+tests/test_llm_service.py::TestLLMService::test_get_available_providers PASSED [ 42%]
+tests/test_llm_service.py::TestLLMService::test_get_available_models PASSED [ 44%]
+tests/test_llm_service.py::TestLLMService::test_get_available_models_invalid_provider PASSED [ 46%]
+tests/test_llm_service.py::TestLLMService::test_get_available_models_unavailable_provider PASSED [ 48%]
+tests/test_llm_service.py::TestLLMService::test_validate_messages_valid PASSED [ 50%]
+tests/test_llm_service.py::TestLLMService::test_validate_messages_invalid_format PASSED [ 51%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_unknown_provider PASSED [ 53%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_unavailable_provider PASSED [ 55%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_invalid_model PASSED [ 57%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_success PASSED [ 58%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_rate_limit_error PASSED [ 60%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_api_key_error PASSED [ 62%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_with_fallback_primary_success PASSED [ 64%]
+tests/test_llm_service.py::TestLLMService::test_get_completion_with_fallback_primary_fails PASSED [ 66%]
+tests/test_utils_helpers.py::TestGetIndex::test_get_index_item_exists PASSED [ 67%]
+tests/test_utils_helpers.py::TestGetIndex::test_get_index_item_not_exists PASSED [ 69%]
+tests/test_utils_helpers.py::TestGetIndex::test_get_index_empty_list PASSED [ 71%]
+tests/test_utils_helpers.py::TestGetIndex::test_get_index_with_duplicates PASSED [ 73%]
+tests/test_utils_helpers.py::TestGetIndex::test_get_index_different_types PASSED [ 75%]
+tests/test_utils_helpers.py::TestImageWithAspectRatio::test_image_with_default_dimensions PASSED [ 76%]
+tests/test_utils_helpers.py::TestImageWithAspectRatio::test_image_with_custom_dimensions PASSED [ 78%]
+tests/test_utils_helpers.py::TestImageWithAspectRatio::test_image_html_structure PASSED [ 80%]
+tests/test_utils_helpers.py::TestImageWithAspectRatio::test_image_css_properties PASSED [ 82%]
+tests/test_utils_helpers.py::TestImageWithAspectRatio::test_image_with_special_characters_in_url PASSED [ 83%]
+tests/test_utils_session_state.py::TestUpdatePrimingText::test_update_from_selectbox PASSED [ 85%]
+tests/test_utils_session_state.py::TestUpdatePrimingText::test_update_from_button PASSED [ 87%]
+tests/test_utils_session_state.py::TestUpdatePrimingText::test_update_from_button_no_value PASSED [ 89%]
+tests/test_utils_session_state.py::TestInitializeSessionState::test_initialize_new_key PASSED [ 91%]
+tests/test_utils_session_state.py::TestInitializeSessionState::test_initialize_existing_key PASSED [ 92%]
+tests/test_utils_session_state.py::TestInitializeSessionState::test_initialize_different_types PASSED [ 94%]
+tests/test_utils_session_state.py::TestGetSessionStateValue::test_get_existing_value PASSED [ 96%]
+tests/test_utils_session_state.py::TestGetSessionStateValue::test_get_non_existing_value_with_default PASSED [ 98%]
+tests/test_utils_session_state.py::TestGetSessionStateValue::test_get_non_existing_value_no_default PASSED [100%]
+
+============================== 56 passed in 3.26s ==============================

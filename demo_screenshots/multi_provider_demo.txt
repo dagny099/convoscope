@@ -1,0 +1,8 @@
+Placeholder for multi_provider_demo.png
+
+Description: Multi-provider fallback demonstration with OpenAI, Anthropic, Google
+
+To capture this screenshot:
+1. Ensure Streamlit app is running: streamlit run run_chat.py
+2. Navigate to appropriate section
+3. Capture screenshot and save as multi_provider_demo.png

@@ -1,0 +1,8 @@
+Placeholder for error_handling_demo.png
+
+Description: Graceful error handling and provider failover
+
+To capture this screenshot:
+1. Ensure Streamlit app is running: streamlit run run_chat.py
+2. Navigate to appropriate section
+3. Capture screenshot and save as error_handling_demo.png
