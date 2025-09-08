@@ -33,3 +33,4 @@ conversation_history/*
 *.sqlite3
 
 
+.venv
