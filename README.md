@@ -2,7 +2,7 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io)
-[![Tests](https://img.shields.io/badge/Tests-56_passing-green.svg)](#testing)
+[![Tests](https://img.shields.io/badge/Tests-56_unit+20_integration-green.svg)](#testing)
 [![Documentation](https://img.shields.io/badge/Docs-MkDocs-blue.svg)](#documentation)
 
 > **Professional Portfolio Project**: A complete transformation from 696-line monolith to production-ready modular architecture, demonstrating systematic software engineering practices, comprehensive testing, and professional documentation.
@@ -124,23 +124,47 @@ src/
 
 ## 🧪 Testing & Quality Assurance
 
-### Comprehensive Test Suite (56 Tests)
+### Comprehensive Test Suite (76 Tests)
 
 ```bash
-# Run all tests
-python -m pytest tests/ -v
+# Run all tests (unit + integration)
+pytest tests/ -v
+
+# Run only unit tests (56)
+pytest tests/ -m "not integration" -v
+
+# Run only integration tests (20)
+pytest tests/integration/ -v
+
+# Run integration tests with visible browser
+pytest tests/integration/ --headed -v
 
 # Run with coverage
 python -m pytest tests/ --cov=src --cov-report=html
-
-# Expected output: 56 passed in ~3 seconds
 ```
 
 ### Test Categories
-- **Unit Tests**: Individual component functionality
-- **Integration Tests**: Service interaction validation  
+- **Unit Tests (56)**: Individual component functionality
+- **Integration Tests (20)**: End-to-end Streamlit web application testing
 - **Mock Testing**: External API dependency isolation
 - **Edge Case Coverage**: Error conditions and boundary cases
+
+### Integration Testing with Playwright
+
+**Full browser-based testing** of the Streamlit web application ensuring real-world functionality:
+
+**Test Coverage:**
+- **🚀 App Startup & Health**: UI loading, component visibility, error-free startup
+- **💬 Chat Workflows**: Message input, streaming responses, conversation persistence
+- **⚙️ Provider Management**: Model selection, configuration UI, fallback behavior
+- **💾 Session Persistence**: State management across tab navigation and reloads
+- **📁 File Operations**: Conversation save/load, HTML export, data validation
+
+**Key Features:**
+- Playwright-based browser automation for realistic testing
+- Mock LLM API responses to avoid external API calls during testing
+- Headless and headed modes for development and debugging
+- Comprehensive UI interaction testing
 
 ### Quality Metrics
 - **Code Coverage**: >90% across all modules

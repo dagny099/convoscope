@@ -42,6 +42,26 @@ export OPENAI_API_KEY="your_api_key_here"
 streamlit run run_chat.py
 ```
 
+### Testing
+```bash
+# Run all tests (unit + integration)
+python run_tests.py all
+
+# Run only unit tests (fast)
+python run_tests.py unit
+
+# Run only integration tests
+python run_tests.py integration
+
+# Run integration tests with visible browser (for debugging)
+python run_tests.py integration --headed
+
+# Traditional pytest commands also work:
+pytest tests/ -v  # All tests
+pytest tests/ -m "not integration" -v  # Unit tests only
+pytest tests/integration/ -v  # Integration tests only
+```
+
 ### Dependencies
 - **Core**: `streamlit`, `llama-index` (v0.11.4), `openai` (≤1.43.0)
 - **Data processing**: `pandas`, `numpy`, `pyarrow`
