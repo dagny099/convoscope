@@ -1,13 +1,27 @@
 site_name: "Convoscope: Multi-Provider AI Chat Platform"
 site_description: "Professional portfolio project demonstrating full-stack development, testing practices, and LLM integration"
-site_author: "Data Science Portfolio Project"
-repo_url: "https://github.com/user/convoscope"
-repo_name: "convoscope"
+site_author: "Barbara — Data Science Portfolio"
+site_url: "https://convoscope.yourdomain.com"         # ← set if you’ve mapped a custom domain
+repo_url: "https://github.com/dagny099/convoscope"     # ← point to your actual repo
+repo_name: "dagny099/convoscope"
+edit_uri: "edit/main/docs/"                            # ← enables “edit this page” links
 
 theme:
   name: material
+  language: en
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.sections
+    - navigation.expand
+    - navigation.footer
+    - toc.follow
+    - toc.integrate
+    - content.code.copy
+    - content.action.edit
+    - content.tabs.link
+    - announce.dismiss
   palette:
-    # Professional color scheme for data science portfolio
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: blue grey
@@ -22,133 +36,78 @@ theme:
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-  
-  features:
-    - navigation.tabs
-    - navigation.sections
-    - navigation.top
-    - navigation.tracking
-    - search.highlight
-    - search.suggest
-    - content.code.copy
-    - content.code.annotate
-    - content.tabs.link
-    - toc.follow
-    - toc.integrate
-  
   icon:
     repo: fontawesome/brands/github
-    tag:
-      python: fontawesome/brands/python
-      testing: material/test-tube
-      architecture: material/sitemap
-
-nav:
-  - Home: index.md
-  - Project Overview:
-    - Problem Statement: overview/problem-statement.md
-    - Technical Approach: overview/technical-approach.md
-    - Key Achievements: overview/achievements.md
-  - Architecture & Design:
-    - System Architecture: architecture/system-overview.md
-    - Data Flow: architecture/data-flow.md
-  - Implementation Guide:
-    - Installation & Setup: guides/installation.md
-    - Multi-Provider Setup: guides/multi-provider-setup.md
-    - Configuration: guides/configuration.md
-    - Provider Guides:
-      - Overview: guides/providers/index.md
-      - OpenAI Setup: guides/providers/openai-setup.md
-      - Anthropic Setup: guides/providers/anthropic-setup.md
-      - Google Gemini Setup: guides/providers/google-gemini-setup.md
-    - Advanced Usage: guides/advanced-usage.md
-  - API Reference:
-    - LLM Service: api/llm-service.md
-    - Conversation Manager: api/conversation-manager.md
-    - Utilities: api/utilities.md
-  - Before vs After:
-    - Architecture Comparison: comparison/architecture.md
+  logo: assets/logo.svg           # optional
+  favicon: assets/favicon.png     # optional
+  # Versioning stub (if you use mike)
+  version:
+    provider: mike
+    default: stable
 
 plugins:
-  - search:
-      lang: en
-  - mermaid2:
-      version: 10.6.1
-  - mkdocstrings:
-      default_handler: python
-      handlers:
-        python:
-          paths: [.]
-          options:
-            docstring_style: google
-            show_source: false
-            show_root_heading: true
-            show_root_toc_entry: false
+  - search
+  # If you're on recent mkdocs-material (≥9.4), Mermaid via superfences is enough.
+  # If you prefer the standalone plugin, add `- mermaid2` and pip install it (see below).
   - git-revision-date-localized:
-      enable_creation_date: true
       type: timeago
+      fallback_to_build_date: true
   - minify:
       minify_html: true
-      minify_js: true
-      minify_css: true
-      htmlmin_opts:
-        remove_comments: true
-      cache_safe: true
 
 markdown_extensions:
-  - attr_list
-  - md_in_html
   - admonition
+  - footnotes
+  - attr_list
+  - def_list
+  - tables
+  - toc:
+      permalink: true
   - pymdownx.details
   - pymdownx.superfences:
       custom_fences:
-        - name: mermaid
+        - name: mermaid         # enables ```mermaid fenced blocks
           class: mermaid
-          format: !!python/name:mermaid2.fence_mermaid_custom
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
+          format: !!python/name:pymdownx.superfences.fence_div_format
+  - pymdownx.tabbed
+  - pymdownx.highlight
   - pymdownx.inlinehilite
-  - pymdownx.snippets:
-      base_path: [docs]
-  - pymdownx.tabbed:
-      alternate_style: true
-  - pymdownx.tasklist:
-      custom_checkbox: true
-  - pymdownx.emoji:
-      emoji_index: !!python/name:material.extensions.emoji.twemoji
-      emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  - toc:
-      permalink: true
-      title: On this page
-  - tables
-  - footnotes
-  - pymdownx.critic
-  - pymdownx.caret
-  - pymdownx.keys
-  - pymdownx.mark
-  - pymdownx.tilde
+  - pymdownx.snippets
+
+nav:
+  - Overview: index.md
+  - Quickstart: quickstart.md
+  - "App in Action": app_in_action.md
+  - Architecture:
+      - "High-Level Architecture": architecture.md
+      - "End-to-End Data Flow": data_flow.md
+  - Configuration: config.md
+  - Deployment:
+      - "GCP (Cloud Run)": DEPLOY_TO_GCP.md
+      - "Local Dev": local_dev.md
+  - Testing: testing.md
+  - Changelog: changelog.md
 
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/user/convoscope
-  tags:
-    Python: python
-    Testing: testing
-    Architecture: architecture
-    LLM: material/robot
-    Streamlit: material/web
-  version:
-    provider: mike
-    default: stable
+      link: https://github.com/dagny099
+      name: GitHub @dagny099
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/your-profile/
+      name: LinkedIn
   analytics:
     provider: google
-    property: G-XXXXXXXXXX  # Replace with actual GA4 property ID
+    property: G-XXXXXXXXXX      # ← replace with your GA4 property
+  consent:
+    title: "Tracking consent"
+    description: "We use cookies to understand how visitors interact with the docs."
+    actions:
+      - accept
+      - manage
 
 extra_css:
   - assets/custom.css
 
-copyright: |
-  Portfolio Project &copy; 2025 - Professional Development Showcase
+copyright: >
+  © 2025 Barbara — Professional Development Showcase

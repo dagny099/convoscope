@@ -1,42 +1,109 @@
-# Byte-compiled / optimized / DLL files
+# --------------------------------------
+# Python bytecode / caches
+# --------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+*.pyd
+*.pdb
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
 
-# Other Folders
-Tmp**
-conversation_history/*
+# --------------------------------------
+# Virtual environments
+# (Use explicit names; avoid broad globs)
+# --------------------------------------
+.venv/
+venv/
+ENV/
+.python-version  # pyenv local version file
 
-# Virtual environment
-.st*/
+# --------------------------------------
+# Environment & secrets (keep out of VCS)
+# --------------------------------------
+.env
+.env.*
+*.env
+*.secrets
+*.key
+*.pem
 
-# Jupyter Notebook
-.ipynb_checkpoints/
-
-# PyCharm specific
+# --------------------------------------
+# Editors / IDEs
+# --------------------------------------
 .idea/
-
-# VS Code specific
 .vscode/
 
-# Streamlit cache
+# --------------------------------------
+# Streamlit
+# Note: comment out the first line if you want to track config in Git.
+# --------------------------------------
 .streamlit/
-# Comment out the line below if you want to include config.toml and secrets.toml
 # .streamlit/config.toml
 # .streamlit/secrets.toml
 
-# MacOS specific
+# --------------------------------------
+# OS junk
+# --------------------------------------
 .DS_Store
+Thumbs.db
 
-# Ignore database files
+# --------------------------------------
+# Build / packaging
+# --------------------------------------
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# --------------------------------------
+# Notebooks cache
+# (Keep notebooks themselves unless you want to ignore *.ipynb)
+# --------------------------------------
+.ipynb_checkpoints/
+
+# --------------------------------------
+# Logs / temp / swap
+# --------------------------------------
+logs/
+*.log
+tmp/
+temp/
+*.swp
+*.swo
+
+# --------------------------------------
+# Databases
+# --------------------------------------
 *.db
 *.sqlite3
 
-
-.venv
-
-# Generated documentation
+# --------------------------------------
+# Docs output (MkDocs)
+# --------------------------------------
 site/
+
+# --------------------------------------
+# Your project-specific artifacts
+# --------------------------------------
+# Keep the folder, ignore its contents; ship a .gitkeep to keep directory structure
+conversation_history/*
+!conversation_history/.gitkeep
+
+# If you truly want to ignore any 'Tmp' dirs, prefer explicit paths:
+# Tmp**  <-- (too broad; can match unexpected files)
+# Replace with:
+Tmp/
+Tmp/**
 
 # Development assets and screenshots
 demo_screenshots/
