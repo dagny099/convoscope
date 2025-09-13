@@ -144,6 +144,37 @@ streamlit run run_chat.py
 
 For detailed setup instructions, see the [Installation Guide](guides/installation.md).
 
+## 🧭 Documentation Navigation
+
+### **📋 Quick Access by Role**
+
+=== "🏢 Hiring Managers & Recruiters"
+    
+    **Goal**: Understand project value and engineering quality in 5 minutes
+    
+    - **[📊 Metrics & Results](metrics/codebase-analysis.md)** - Quantified achievements
+    - **[🎯 Portfolio Impact](overview/achievements.md)** - Business value translation  
+    - **[📈 Visual Asset Index](visual-assets-index.md)** - Screenshots and diagrams
+    - **[✨ Project Highlights](#project-highlights)** - Top achievements summary
+
+=== "🔧 Technical Reviewers"
+    
+    **Goal**: Evaluate architecture decisions and code quality
+    
+    - **[🏗️ System Architecture](architecture/system-overview.md)** - Complete technical design
+    - **[🤔 Technical Decisions](architecture/technical-decisions.md)** - Why & how decisions were made
+    - **[🔄 Data Flow](architecture/data-flow.md)** - Request processing pipeline
+    - **[📋 API Reference](api/llm-service.md)** - Detailed implementation docs
+
+=== "👩‍💻 Fellow Developers"
+    
+    **Goal**: Learn from the transformation process and implementation
+    
+    - **[📖 Blog Series](../blog/)** - Engineering journey narrative
+    - **[🛠️ Implementation Guides](guides/installation.md)** - How to build similar systems
+    - **[📊 Before vs After Analysis](comparison/architecture.md)** - Refactoring case study
+    - **[🧪 Testing Strategy](guides/testing.md)** - Comprehensive testing approach
+
 ## Documentation Structure
 
 This documentation provides comprehensive coverage of:
