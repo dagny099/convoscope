@@ -55,7 +55,13 @@ timeline
     Result : 42% less code : 99.9% reliability
 ```
 
-📸 *Screenshots coming soon - demonstrating real-time provider switching and conversation management*
+### **Live Application Screenshots**
+
+| Feature | Screenshot | Description |
+|---------|------------|-------------|
+| **Main Interface** | ![Main Interface](docs/assets/screenshots/01-hero-interface.png) | Clean, professional chat interface with multi-provider support |
+| **Provider Selection** | ![Provider Switching](docs/assets/screenshots/02-provider-selector-open.png) | Dropdown showing OpenAI, Anthropic, and Gemini options |
+| **Mobile Responsive** | ![Mobile Interface](docs/assets/screenshots/05-mobile-interface.png) | Fully responsive design across all devices |
 
 **Key Demonstrations:**
 - **Provider Switching:** Zero-downtime fallbacks during API outages

@@ -43,21 +43,21 @@
 ## 📸 Screenshots
 
 ### **Core Functionality Proof**
-| Screenshot | Status | Purpose | Planned Location |
-|------------|--------|---------|------------------|
-| **Multi-Provider Selection** | 🚧 Needed | Show provider dropdown and switching | README.md, docs/guides/ |
-| **Provider Fallback Demo** | 🚧 Needed | Visual proof of automatic failover | Architecture docs |
-| **Conversation Management** | 🚧 Needed | Save/load/export functionality | Feature documentation |
-| **Real-time Streaming** | 🚧 Needed | Message streaming in action | README.md demo section |
-| **Error Handling** | 🚧 Needed | Graceful error messages | Reliability documentation |
+| Screenshot | Status | Purpose | Location |
+|------------|--------|---------|----------|
+| **Multi-Provider Selection** | ✅ **Captured** | Provider dropdown with OpenAI, Anthropic, Gemini | [README.md](../README.md), [02-provider-selector-open.png](assets/screenshots/02-provider-selector-open.png) |
+| **Main Chat Interface** | ✅ **Captured** | Clean, professional UI for portfolio | [README.md](../README.md), [01-hero-interface.png](assets/screenshots/01-hero-interface.png) |
+| **Full Application View** | ✅ **Captured** | Complete interface with all components | [02-full-interface.png](assets/screenshots/02-full-interface.png) |
+| **Mobile Responsive** | ✅ **Captured** | Cross-device compatibility demonstration | [README.md](../README.md), [05-mobile-interface.png](assets/screenshots/05-mobile-interface.png) |
+| **Sidebar Configuration** | ✅ **Captured** | Settings and configuration options | [06-sidebar-configuration.png](assets/screenshots/06-sidebar-configuration.png) |
 
 ### **UI/UX Examples**
-| Screenshot | Status | Purpose | Planned Location |
-|------------|--------|---------|------------------|
-| **Main Chat Interface** | 🚧 Needed | Clean, professional UI | README.md hero section |
-| **Settings & Configuration** | 🚧 Needed | Show customization options | Configuration guides |
-| **Dark/Light Mode Toggle** | 🚧 Needed | UI polish demonstration | Feature showcase |
-| **Provider Status Indicators** | 🚧 Needed | Health monitoring UI | Technical documentation |
+| Screenshot | Status | Purpose | File Link |
+|------------|--------|---------|-----------|
+| **Hero Interface** | ✅ **1200x600** | Perfect size for README header | [01-hero-interface.png](assets/screenshots/01-hero-interface.png) |
+| **Full Interface** | ✅ **1200x800** | Complete application view | [01-main-interface.png](assets/screenshots/01-main-interface.png) |
+| **Error Handling UI** | ✅ **800x200** | Graceful error message display | [04-error-handling-stAlert.png](assets/screenshots/04-error-handling-stAlert.png) |
+| **Mobile Interface** | ✅ **375x667** | Mobile responsive design proof | [05-mobile-interface.png](assets/screenshots/05-mobile-interface.png) |
 
 ### **Before/After Comparisons**
 | Screenshot | Status | Purpose | Planned Location |

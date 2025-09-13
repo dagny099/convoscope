@@ -231,8 +231,18 @@ async def main():
     print(f"🌐 Using base URL: {BASE_URL}")
     print("\n⚠️  Make sure Convoscope is running at the base URL before continuing!")
     
-    # Confirm the app is running
-    input("Press Enter when Convoscope is running at http://localhost:8501...")
+    # Check if the app is running
+    import requests
+    try:
+        response = requests.get(BASE_URL, timeout=5)
+        if response.status_code == 200:
+            print("✅ Convoscope detected running - proceeding with screenshot capture...")
+        else:
+            print("❌ Convoscope not responding - please start the app first")
+            return
+    except Exception as e:
+        print(f"❌ Could not connect to {BASE_URL} - please start Convoscope first")
+        return
     
     async with async_playwright() as p:
         # Launch browser
