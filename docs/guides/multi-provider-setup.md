@@ -2,7 +2,33 @@
 
 ## Overview
 
-Convoscope supports multiple LLM providers with intelligent fallback, providing robust AI capabilities and reducing dependency on any single service. This guide walks you through setting up OpenAI, Anthropic, and Google Gemini providers.
+Convoscope supports multiple AI providers with intelligent fallback - when one provider is down, it automatically switches to another. This guide shows you how to set up OpenAI, Anthropic, and Google Gemini for maximum reliability.
+
+## Why Use Multiple Providers?
+
+Single-provider apps fail when their AI service is unavailable. With Convoscope's multi-provider setup:
+
+```mermaid
+flowchart LR
+    A[Your Message] --> B{Provider 1}
+    B -->|Available| C[✅ Response]
+    B -->|Down| D{Provider 2}
+    D -->|Available| E[✅ Response]
+    D -->|Down| F{Provider 3}
+    F -->|Available| G[✅ Response]
+    F -->|All Down| H[❌ Clear Error]
+
+    style A fill:#e3f2fd
+    style C fill:#e8f5e8
+    style E fill:#e8f5e8
+    style G fill:#e8f5e8
+    style H fill:#ffebee
+```
+
+**Benefits:**
+- **99.9% uptime**: If one provider is down, others keep working
+- **No vendor lock-in**: Switch providers anytime
+- **Cost optimization**: Use cheaper providers when possible
 
 ## Quick Setup (All Providers)
 
@@ -29,13 +55,18 @@ python test_multi_provider.py
 streamlit run run_chat.py
 ```
 
+**Success looks like this:**
+
+[![Provider Selection Working](../assets/screenshots/02-provider-selector-open.png){: target="_blank"}](../assets/screenshots/02-provider-selector-open.png)
+*All three providers available in dropdown - click to enlarge*
+
 ## Provider Comparison
 
-| Provider | Environment Variable | Models Available | Setup Difficulty | Cost |
-|----------|---------------------|------------------|------------------|------|
-| **OpenAI** | `OPENAI_API_KEY` | gpt-4o-mini, gpt-4o, gpt-3.5-turbo | ⭐ Easy | $$ |
-| **Anthropic** | `ANTHROPIC_API_KEY` | claude-3-5-sonnet, claude-3-haiku | ⭐ Easy | $$ |
-| **Google** | `GEMINI_API_KEY` | gemini-1.5-pro, gemini-pro | ⭐⭐ Moderate | $ |
+| Provider | Environment Variable | Popular Models | Setup Time | Cost Level |
+|----------|---------------------|----------------|------------|------------|
+| **OpenAI** | `OPENAI_API_KEY` | gpt-4o-mini, gpt-4o, gpt-3.5-turbo | 2 min | $$ |
+| **Anthropic** | `ANTHROPIC_API_KEY` | claude-3-5-sonnet, claude-3-haiku | 2 min | $$ |
+| **Google** | `GEMINI_API_KEY` | gemini-1.5-pro, gemini-pro | 3 min | $ |
 
 ## Provider-Specific Setup
 

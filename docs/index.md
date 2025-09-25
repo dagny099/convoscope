@@ -1,202 +1,194 @@
-# Convoscope: Multi-Provider AI Chat Platform
+# Convoscope: Multi-Provider AI Chat
 
-!!! abstract "Portfolio Project Overview"
-    A sophisticated AI chat application demonstrating professional software engineering practices, from monolithic refactoring to production-ready architecture with comprehensive testing and multi-provider LLM integration.
+## What is Convoscope?
 
-## Project at a Glance
+Convoscope is a reliable AI chat application that automatically switches between multiple AI providers (OpenAI, Anthropic, Google) to ensure your conversations never get interrupted. When one AI service is down or slow, Convoscope seamlessly falls back to another provider so you can keep chatting.
+
+[![Convoscope Interface](assets/screenshots/01-hero-interface.png){: target="_blank"}](assets/screenshots/01-hero-interface.png)
+*Click image to view full size*
+
+## Why Use Convoscope?
+
+- **🔄 Never get stuck**: If OpenAI is down, automatically switch to Claude or Gemini
+- **💾 Save conversations**: Keep your chat history and reload sessions anytime
+- **🎯 Simple setup**: Works with just one API key, supports three providers
+- **🛡️ Built for reliability**: Smart error handling and automatic retries
+
+## Quick Start
+
+Get up and running in 3 minutes:
+
+```bash
+# 1. Clone and install
+git clone <repository-url>
+cd convoscope
+pip install -r requirements.txt
+
+# 2. Set your API key (choose one)
+export OPENAI_API_KEY="sk-your-key-here"
+# OR export ANTHROPIC_API_KEY="sk-ant-your-key-here"
+# OR export GEMINI_API_KEY="your-gemini-key-here"
+
+# 3. Run the app
+streamlit run run_chat.py
+```
+
+The app will open in your browser at `http://localhost:8501`
+
+📖 **Need more details?** See the [Installation Guide](guides/installation.md)
+
+## How Multi-Provider Switching Works
+
+When you send a message, Convoscope intelligently routes your request:
+
+```mermaid
+flowchart LR
+    A[Your Message] --> B{Primary Provider Available?}
+    B -->|Yes| C[OpenAI Response]
+    B -->|No| D{Fallback Available?}
+    D -->|Yes| E[Claude Response]
+    D -->|No| F[Gemini Response]
+    C --> G[Display Response]
+    E --> G
+    F --> G
+
+    style A fill:#e3f2fd
+    style G fill:#e8f5e8
+    style C fill:#fff3e0
+    style E fill:#f3e5f5
+    style F fill:#e8f5e8
+```
+
+*[📊 View detailed data flow →](architecture/data-flow.md){: target="_blank"}*
+
+## Key Features
+
+### Multiple AI Providers
+Choose from three leading AI providers:
+
+[![Provider Selection](assets/screenshots/02-provider-selector-open.png){: target="_blank"}](assets/screenshots/02-provider-selector-open.png)
+*Provider selection dropdown - click to enlarge*
+
+- **OpenAI** (GPT-4, GPT-3.5) - Most popular, fast responses
+- **Anthropic** (Claude) - Great reasoning, longer context
+- **Google** (Gemini) - Cost-effective, multimodal
+
+### Automatic Error Handling
+When things go wrong, Convoscope handles it gracefully:
+
+[![Error Handling](assets/screenshots/04-error-handling-stAlert.png){: target="_blank"}](assets/screenshots/04-error-handling-stAlert.png)
+*User-friendly error messages - click to enlarge*
+
+### Conversation Management
+[![Full Interface](assets/screenshots/02-full-interface.png){: target="_blank"}](assets/screenshots/02-full-interface.png)
+*Complete interface with conversation management - click to enlarge*
+
+- Save conversations with custom names
+- Load previous chat sessions
+- Export conversations to HTML
+- Auto-backup prevents data loss
+
+### Mobile-Friendly Design
+[![Mobile Interface](assets/screenshots/05-mobile-interface.png){: target="_blank"}](assets/screenshots/05-mobile-interface.png)
+*Responsive mobile interface - click to enlarge*
+
+## System Architecture
+
+Simple, reliable architecture that just works:
 
 ```mermaid
 flowchart TB
-    subgraph Frontend ["🎨 Frontend Layer"]
-        UI["📱 Streamlit UI"]
+    subgraph Frontend ["🎨 User Interface"]
+        UI["📱 Streamlit App"]
     end
-    
-    subgraph Backend ["⚙️ Backend Services"]
-        LLM["🤖 LLM Service"]
+
+    subgraph Backend ["⚙️ Core Services"]
+        LLM["🤖 Multi-Provider LLM"]
         CONV["💬 Conversation Manager"]
     end
-    
-    subgraph External ["🌐 External APIs"]
-        OPENAI["🔥 OpenAI API"]
-        ANTHROPIC["🧠 Anthropic API"]
-        GOOGLE["🌟 Google Gemini"]
+
+    subgraph External ["🌐 AI Providers"]
+        OPENAI["🔥 OpenAI"]
+        ANTHROPIC["🧠 Anthropic"]
+        GOOGLE["🌟 Google"]
     end
-    
+
     UI --> LLM
     UI --> CONV
     LLM --> OPENAI
     LLM --> ANTHROPIC
     LLM --> GOOGLE
-    
+
     classDef frontend fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
     classDef backend fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
     classDef external fill:#e8f5e8,stroke:#388e3c,stroke-width:2px
-    
+
     class UI frontend
     class LLM,CONV backend
     class OPENAI,ANTHROPIC,GOOGLE external
 ```
 
-## Technical Highlights
+*[🏗️ View detailed system architecture →](architecture/system-overview.md){: target="_blank"}*
 
-=== "🏗️ Architecture"
-    
-    **Modular Design**
-    - Transformed 696-line monolith into clean, testable modules
-    - Separation of concerns with dedicated service layers  
-    - Dependency injection and proper abstraction layers
-    
-    **Multi-Provider Integration**
-    - Unified LLM interface supporting OpenAI, Anthropic, Google
-    - Automatic fallback and retry logic with exponential backoff
-    - Provider health monitoring and availability checking
+## Getting Started
 
-=== "🧪 Testing"
-    
-    **Comprehensive Test Suite**
-    - **56 passing tests** with pytest framework
-    - Unit, integration, and error handling test coverage
-    - Mock-based testing for external dependencies
-    - Automated test fixtures for Streamlit components
-    
-    **Quality Metrics**
-    - 100% test coverage for extracted modules
-    - Proper isolation and dependency mocking
-    - Professional test organization and structure
+### **📚 Documentation Guide**
 
-=== "🛠️ Engineering"
-    
-    **Production-Ready Features**
-    - Robust error handling with user-friendly messages
-    - Input validation and sanitization
-    - Secure file operations with backup mechanisms
-    - Conversation persistence with data integrity checks
-    
-    **Development Practices**
-    - Test-driven development methodology
-    - Incremental refactoring with continuous validation
-    - Professional Git workflow with meaningful commits
+=== "🚀 New Users"
 
-## Problem Solved
+    **Just want to use the app?**
 
-**Challenge**: Transform a functional but unmaintainable prototype into a portfolio-worthy demonstration of professional software engineering capabilities.
+    1. **[📖 Installation Guide](guides/installation.md)** - Complete setup instructions
+    2. **[⚡ Quick Setup](guides/quick-setup.md)** - 5-minute start (coming soon)
+    3. **[🎯 Multi-Provider Setup](guides/multi-provider-setup.md)** - Configure all three providers
 
-**Original Issues**:
-- 696-line monolithic file with no separation of concerns
-- Zero testing infrastructure or quality assurance
-- Hardcoded dependencies and poor error handling
-- Single LLM provider with no fallback mechanisms
+=== "⚙️ Configuration"
 
-**Solution Delivered**:
-- Clean, modular architecture following SOLID principles
-- Comprehensive testing infrastructure with 56 automated tests
-- Multi-provider LLM service with intelligent fallback logic
-- Production-ready error handling and data validation
+    **Need to customize settings?**
 
-## Key Achievements
+    1. **[🔧 Basic Configuration](guides/configuration.md)** - Environment variables and settings
+    2. **[🛠️ Advanced Usage](guides/advanced-usage.md)** - Custom configurations
+    3. **[❓ Troubleshooting](guides/troubleshooting.md)** - Common issues and solutions
 
-!!! success "Portfolio Impact"
-    **Before**: Functional prototype lacking professional engineering practices  
-    **After**: Production-ready application demonstrating advanced technical skills
+=== "🏗️ Technical Details"
 
-### Technical Improvements
+    **Want to understand how it works?**
 
-| Metric | Before | After | Improvement |
-|--------|---------|--------|-------------|
-| **Lines of Code** | 696 (single file) | ~400 (modular) | 42% reduction |
-| **Test Coverage** | 0% (no tests) | 100% (56 tests) | Complete coverage |
-| **Error Handling** | Basic try/catch | Comprehensive strategy | Production-ready |
-| **LLM Providers** | 1 (OpenAI only) | 3 with fallbacks | 300% increase |
-| **Code Maintainability** | Poor | Excellent | Professional standard |
+    1. **[🏛️ System Architecture](architecture/system-overview.md)** - Complete technical design
+    2. **[🔄 Data Flow](architecture/data-flow.md)** - Request processing pipeline
+    3. **[📋 API Reference](api/llm-service.md)** - Detailed implementation docs
 
-### Skills Demonstrated
+## What Makes Convoscope Reliable?
 
-- **System Architecture**: Modular design and service separation
-- **Test Engineering**: Comprehensive pytest implementation with mocking
-- **API Integration**: Multi-provider LLM service with error resilience  
-- **Data Engineering**: Robust persistence layer with validation
-- **DevOps Practices**: Professional Git workflow and documentation
+Unlike single-provider chat apps that fail when their AI service is down, Convoscope implements **intelligent fallback**:
 
-## Architecture Overview
+```mermaid
+graph TD
+    A[User sends message] --> B{OpenAI available?}
+    B -->|✅ Yes| C[Get OpenAI response]
+    B -->|❌ No| D{Anthropic available?}
+    D -->|✅ Yes| E[Get Claude response]
+    D -->|❌ No| F{Google available?}
+    F -->|✅ Yes| G[Get Gemini response]
+    F -->|❌ No| H[Show helpful error]
 
-The application follows a layered architecture pattern:
+    C --> I[Display response to user]
+    E --> I
+    G --> I
 
-- **Presentation Layer**: Streamlit-based user interface with session management
-- **Service Layer**: Business logic handling LLM interactions and conversation management  
-- **Integration Layer**: Multi-provider API clients with fallback logic
-- **Persistence Layer**: File-based storage with backup and validation
-
-## Quick Start
-
-```bash
-# Clone and setup
-git clone <repository-url>
-cd convoscope
-pip install -r requirements.txt
-
-# Configure API keys
-export OPENAI_API_KEY="your-key"
-export ANTHROPIC_API_KEY="your-key"
-
-# Run application
-streamlit run run_chat.py
+    style A fill:#e3f2fd
+    style I fill:#e8f5e8
+    style H fill:#ffebee
 ```
 
-For detailed setup instructions, see the [Installation Guide](guides/installation.md).
+*[🔍 Learn more about the reliability architecture →](architecture/system-overview.md#reliability-improvements){: target="_blank"}*
 
-## 🧭 Documentation Navigation
+## Support
 
-### **📋 Quick Access by Role**
-
-=== "🏢 Hiring Managers & Recruiters"
-    
-    **Goal**: Understand project value and engineering quality in 5 minutes
-    
-    - **[📊 Metrics & Results](metrics/codebase-analysis.md)** - Quantified achievements
-    - **[🎯 Portfolio Impact](overview/achievements.md)** - Business value translation  
-    - **[📈 Visual Asset Index](visual-assets-index.md)** - Screenshots and diagrams
-    - **[✨ Project Highlights](#project-highlights)** - Top achievements summary
-
-=== "🔧 Technical Reviewers"
-    
-    **Goal**: Evaluate architecture decisions and code quality
-    
-    - **[🏗️ System Architecture](architecture/system-overview.md)** - Complete technical design
-    - **[🤔 Technical Decisions](architecture/technical-decisions.md)** - Why & how decisions were made
-    - **[🔄 Data Flow](architecture/data-flow.md)** - Request processing pipeline
-    - **[📋 API Reference](api/llm-service.md)** - Detailed implementation docs
-
-=== "👩‍💻 Fellow Developers"
-    
-    **Goal**: Learn from the transformation process and implementation
-    
-    - **[📖 Blog Series](../blog/)** - Engineering journey narrative
-    - **[🛠️ Implementation Guides](guides/installation.md)** - How to build similar systems
-    - **[📊 Before vs After Analysis](comparison/architecture.md)** - Refactoring case study
-    - **[🧪 Testing Strategy](guides/testing.md)** - Comprehensive testing approach
-
-## Documentation Structure
-
-This documentation provides comprehensive coverage of:
-
-- **[Project Overview](overview/problem-statement.md)**: Problem context and solution approach
-- **[Architecture & Design](architecture/system-overview.md)**: Technical architecture and design decisions
-- **[Implementation Guide](guides/installation.md)**: Setup, configuration, and usage
-- **[API Reference](api/llm-service.md)**: Detailed API documentation for all modules
-- **[Development Process](development/requirements.md)**: Engineering methodology and practices
-- **[Before vs After](comparison/architecture.md)**: Quantified improvements and analysis
-
-## Next Steps
-
-Explore the documentation to understand:
-
-1. **System Design**: How the modular architecture enables maintainability
-2. **Implementation**: Technical details of multi-provider LLM integration
-3. **Testing Strategy**: Comprehensive approach to quality assurance
-4. **Engineering Process**: Professional development practices and methodology
-
-This project demonstrates the transformation of a working prototype into a production-ready application through systematic engineering practices and professional development methodologies.
+- **📖 Documentation**: Browse the guides above for comprehensive help
+- **💬 Issues**: Found a bug? Check the troubleshooting guide first
+- **🔧 Configuration**: Need help with setup? See the configuration guides
 
 ---
 
-*This portfolio project showcases advanced Python development, system architecture design, comprehensive testing practices, and professional software engineering methodologies.*
+*Ready to get started? Begin with the [Installation Guide →](guides/installation.md)*

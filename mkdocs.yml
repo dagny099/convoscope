@@ -75,18 +75,30 @@ markdown_extensions:
   - pymdownx.snippets
 
 nav:
-  - Overview: index.md
-  - Quickstart: quickstart.md
-  - "App in Action": app_in_action.md
-  - Architecture:
-      - "High-Level Architecture": architecture.md
-      - "End-to-End Data Flow": data_flow.md
-  - Configuration: config.md
-  - Deployment:
-      - "GCP (Cloud Run)": DEPLOY_TO_GCP.md
-      - "Local Dev": local_dev.md
-  - Testing: testing.md
-  - Changelog: changelog.md
+  - Home: index.md
+  - Getting Started:
+      - "Installation": guides/installation.md
+      - "Quick Setup": guides/quick-setup.md
+      - "Multi-Provider Setup": guides/multi-provider-setup.md
+  - User Guide:
+      - "Interface Guide": guides/interface-guide.md
+      - "Conversation Management": guides/conversation-management.md
+      - "Advanced Usage": guides/advanced-usage.md
+      - "Troubleshooting": guides/troubleshooting.md
+  - Configuration:
+      - "Basic Settings": guides/configuration.md
+      - "Provider Setup":
+          - "Overview": guides/providers/index.md
+          - "OpenAI Setup": guides/providers/openai-setup.md
+          - "Anthropic Setup": guides/providers/anthropic-setup.md
+          - "Google Gemini Setup": guides/providers/google-gemini-setup.md
+  - Technical Reference:
+      - "System Architecture": architecture/system-overview.md
+      - "Data Flow": architecture/data-flow.md
+      - "API Reference":
+          - "LLM Service": api/llm-service.md
+          - "Conversation Manager": api/conversation-manager.md
+          - "Utilities": api/utilities.md
 
 extra:
   social:
