@@ -5,39 +5,66 @@ This file contains all the Mermaid diagrams planned for the MkDocs documentation
 ## 1. System Architecture Diagram
 
 ```mermaid
-architecture-beta
-    group frontend(cloud)[Frontend Layer]
-    group backend(cloud)[Backend Services] 
-    group storage(database)[Data Storage]
-    group external(cloud)[External APIs]
+flowchart LR
+  %% =========================
+  %% Styling (tweak to taste)
+  %% =========================
+  classDef front fill:#eaf4ff,stroke:#2b6cb0,color:#1a365d,stroke-width:1px;
+  classDef back  fill:#fff8e1,stroke:#b7791f,color:#7b341e,stroke-width:1px;
+  classDef data  fill:#f0fff4,stroke:#2f855a,color:#22543d,stroke-width:1px;
+  classDef ext   fill:#fff5f5,stroke:#c53030,color:#742a2a,stroke-width:1px;
 
-    service streamlit(internet)[Streamlit UI] in frontend
-    service session(server)[Session Management] in frontend
-    
-    service llm_service(server)[LLM Service] in backend
-    service conv_manager(server)[Conversation Manager] in backend
-    service error_handler(server)[Error Handler] in backend
-    
-    service file_storage(disk)[File Storage] in storage
-    service conversation_db(database)[Conversation Data] in storage
-    
-    service openai(internet)[OpenAI API] in external
-    service anthropic(internet)[Anthropic API] in external
-    service google(internet)[Google Gemini] in external
+  %% =========================
+  %% Layout & Groups
+  %% =========================
+  %% Use LR (left→right). Switch to "flowchart TB" for top→bottom.
+  subgraph Frontend["Frontend Layer"]
+    direction TB
+    streamlit[Streamlit UI]
+    session[Session Management]
+    class streamlit,session front;
+  end
 
-    streamlit:R -- L:session
-    streamlit:D -- U:llm_service
-    streamlit:D -- U:conv_manager
-    
-    llm_service:R -- L:error_handler
-    llm_service:D -- U:openai
-    llm_service:D -- U:anthropic
-    llm_service:D -- U:google
-    
-    conv_manager:D -- U:file_storage
-    conv_manager:D -- U:conversation_db
-    
-    session:D -- U:conv_manager
+  subgraph Backend["Backend Services"]
+    direction TB
+    llm_service[LLM Service]
+    conv_manager[Conversation Manager]
+    error_handler[Error Handler]
+    class llm_service,conv_manager,error_handler back;
+  end
+
+  subgraph Storage["Data Storage"]
+    direction TB
+    file_storage[(File Storage)]
+    conversation_db[(Conversation Data)]
+    class file_storage,conversation_db data;
+  end
+
+  subgraph External["External APIs"]
+    direction TB
+    openai[OpenAI API]
+    anthropic[Anthropic API]
+    google[Google Gemini]
+    class openai,anthropic,google ext;
+  end
+
+  %% =========================
+  %% Edges (with light labels)
+  %% =========================
+  streamlit -->|uses| session
+  streamlit -->|calls| llm_service
+  streamlit -->|calls| conv_manager
+
+  llm_service -->|routes errors to| error_handler
+  llm_service -->|calls| openai
+  llm_service -->|calls| anthropic
+  llm_service -->|calls| google
+
+  conv_manager -->|writes| file_storage
+  conv_manager -->|writes| conversation_db
+
+  session -->|persists via| conv_manager
+
 ```
 
 ## 2. Data Flow Diagram
@@ -125,6 +152,7 @@ classDiagram
     
     note for LLMService "Handles multi-provider LLM integration\nwith retry logic and fallbacks"
     note for ConversationManager "Manages conversation persistence\nwith validation and error handling"
+    
 ```
 
 ## 4. User Interaction Sequence Diagram
@@ -263,7 +291,7 @@ flowchart TB
 ## 7. Deployment & CI/CD Architecture
 
 ```mermaid
-gitgraph
+gitGraph
     commit id: "Initial Monolith"
     branch feature-refactor
     checkout feature-refactor
@@ -282,6 +310,7 @@ gitgraph
     checkout main
     merge documentation
     commit id: "Production Deploy"
+
 ```
 
 ## Usage in Documentation
