@@ -402,7 +402,8 @@ def sidebar_configuration():
     if "where_image" not in st.session_state:  # Image location for the page header
         # st.session_state.where_image = "https://www.barbhs.com/assets/images/bio-photo-1.jpg"
         # st.session_state.where_image = "https://upload.wikimedia.org/wikipedia/commons/e/ec/Down_the_Rabbit_Hole.png"
-        st.session_state.where_image = "https://jeffersonairplane.com/wp-content/uploads/2020/02/Timekeeper-804x1024.jpg"
+        # st.session_state.where_image = "https://jeffersonairplane.com/wp-content/uploads/2020/02/Timekeeper-804x1024.jpg"
+        st.session_state.where_image = "https://www.barbhs.com/assets/images/swirl_barb_logo.png"
     tmp = st.sidebar.text_input("Header image:", value=st.session_state.where_image)
     st.session_state.where_image = tmp
 
