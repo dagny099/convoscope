@@ -190,7 +190,7 @@ flowchart LR
 
 ---
 
-## TDR-005: llama-index Library Choice
+## TDR-005: llama-index Library Choice {#tdr-005-llama-index-choice}
 
 ### **Context**
 Needed to choose LLM integration library for multi-provider support and conversation management.

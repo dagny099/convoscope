@@ -316,4 +316,4 @@ Most portfolio projects demonstrate:
 
 ---
 
-*Next: [Portfolio Impact](portfolio-impact.md) - How this project enhances professional presentation and career prospects*
+*Next: [Portfolio Showcase](../portfolio-showcase.md) - Complete project presentation and technical highlights*

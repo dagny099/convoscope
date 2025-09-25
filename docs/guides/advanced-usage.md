@@ -994,4 +994,4 @@ This advanced usage guide demonstrates how to extend Convoscope with custom prov
 
 ---
 
-*Next: [Testing Guide](testing.md) - Comprehensive testing strategies and test development*
+*Next: [Troubleshooting Guide](troubleshooting.md) - Common issues and solutions*

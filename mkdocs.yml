@@ -1,4 +1,4 @@
-site_name: "Convoscope: Multi-Provider AI Chat Platform"
+site_name: "🗨️ Convoscope: Multi-Provider AI Chat"
 site_description: "Professional portfolio project demonstrating full-stack development, testing practices, and LLM integration"
 site_author: "Barbara — Data Science Portfolio"
 site_url: "https://convoscope.yourdomain.com"         # ← set if you’ve mapped a custom domain
@@ -38,7 +38,7 @@ theme:
         name: Switch to light mode
   icon:
     repo: fontawesome/brands/github
-  logo: assets/logo.svg           # optional
+  # logo: assets/logo.svg           # optional - removed broken reference
   favicon: assets/favicon.png     # optional
   # Versioning stub (if you use mike)
   version:
@@ -99,6 +99,12 @@ nav:
           - "LLM Service": api/llm-service.md
           - "Conversation Manager": api/conversation-manager.md
           - "Utilities": api/utilities.md
+  - Project Details:
+      - "Screenshots": project-details/screenshots.md
+      - "Visual Assets Index": visual-assets-index.md
+      - "Development Analysis": project-details/development-analysis.md
+      - "Technical Metrics": project-details/technical-metrics.md
+      - "Architecture Evolution": project-details/architecture-evolution.md
 
 extra:
   social:
@@ -111,12 +117,6 @@ extra:
   analytics:
     provider: google
     property: G-XXXXXXXXXX      # ← replace with your GA4 property
-  consent:
-    title: "Tracking consent"
-    description: "We use cookies to understand how visitors interact with the docs."
-    actions:
-      - accept
-      - manage
 
 extra_css:
   - assets/custom.css

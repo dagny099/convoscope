@@ -20,22 +20,22 @@
 ### **Architecture & System Design**
 | Diagram | Location | Purpose | Best For |
 |---------|----------|---------|----------|
-| **High-Level Architecture** | [README.md](../README.md#high-level-architecture) | System overview with service layers | Technical interviews, documentation |
-| **System Architecture (Detailed)** | [docs/architecture/system-overview.md](architecture/system-overview.md) | Complete architecture with patterns | Deep technical review |
-| **Data Flow Pipeline** | [README.md](../README.md#end-to-end-data-flow) | Request processing flow | Understanding system behavior |
+| **High-Level Architecture** | [system-overview.md](architecture/system-overview.md#high-level-architecture) | System overview with service layers | Technical interviews, documentation |
+| **System Architecture (Detailed)** | [system-overview.md](architecture/system-overview.md) | Complete architecture with patterns | Deep technical review |
+| **Data Flow Pipeline** | [data-flow.md](architecture/data-flow.md) | Request processing flow | Understanding system behavior |
 | **Provider Circuit Breaker** | [docs/architecture/system-overview.md](architecture/system-overview.md#circuit-breaker-pattern) | Error handling patterns | Reliability discussions |
 
 ### **User Experience & Journey**
 | Diagram | Location | Purpose | Best For |
 |---------|----------|---------|----------|
-| **User Journey Comparison** | [docs/assets/diagrams/user-journey-comparison.mmd](assets/diagrams/user-journey-comparison.mmd) | Before/after reliability | Portfolio presentations |
-| **Reliability Problem/Solution** | [README.md](../README.md#the-reliability-problem-solved) | Visual impact statement | 30-second pitch |
+| **User Journey Comparison** | [user-journey-comparison.mmd](assets/diagrams/user-journey-comparison.mmd) | Before/after reliability | Technical presentations |
+| **Reliability Improvements** | [system-overview.md](architecture/system-overview.md#reliability-improvements) | Multi-provider benefits | Technical discussions |
 
 ### **Project Evolution & Metrics**
 | Diagram | Location | Purpose | Best For |
 |---------|----------|---------|----------|
-| **Refactoring Timeline** | [docs/assets/diagrams/refactoring-journey.mmd](assets/diagrams/refactoring-journey.mmd) | Transformation story | Blog posts, presentations |
-| **Transformation Journey** | [README.md](../README.md#the-transformation-journey) | High-level evolution | Quick overview |
+| **Refactoring Timeline** | [refactoring-journey.mmd](assets/diagrams/refactoring-journey.mmd) | Transformation story | Technical presentations |
+| **Architecture Evolution** | [architecture-evolution.md](project-details/architecture-evolution.md) | Technical transformation details | Technical review |
 | **Reliability Metrics** | [docs/assets/diagrams/reliability-metrics.mmd](assets/diagrams/reliability-metrics.mmd) | Quantified improvements | Technical discussions |
 
 ---
@@ -45,10 +45,10 @@
 ### **Core Functionality Proof**
 | Screenshot | Status | Purpose | Location |
 |------------|--------|---------|----------|
-| **Multi-Provider Selection** | ✅ **Captured** | Provider dropdown with OpenAI, Anthropic, Gemini | [README.md](../README.md), [02-provider-selector-open.png](assets/screenshots/02-provider-selector-open.png) |
-| **Main Chat Interface** | ✅ **Captured** | Clean, professional UI for portfolio | [README.md](../README.md), [01-hero-interface.png](assets/screenshots/01-hero-interface.png) |
+| **Multi-Provider Selection** | ✅ **Captured** | Provider dropdown with OpenAI, Anthropic, Gemini | [screenshots.md](project-details/screenshots.md), [02-provider-selector-open.png](assets/screenshots/02-provider-selector-open.png) |
+| **Main Chat Interface** | ✅ **Captured** | Clean, professional UI | [screenshots.md](project-details/screenshots.md), [01-hero-interface.png](assets/screenshots/01-hero-interface.png) |
 | **Full Application View** | ✅ **Captured** | Complete interface with all components | [02-full-interface.png](assets/screenshots/02-full-interface.png) |
-| **Mobile Responsive** | ✅ **Captured** | Cross-device compatibility demonstration | [README.md](../README.md), [05-mobile-interface.png](assets/screenshots/05-mobile-interface.png) |
+| **Mobile Responsive** | ✅ **Captured** | Cross-device compatibility demonstration | [screenshots.md](project-details/screenshots.md), [05-mobile-interface.png](assets/screenshots/05-mobile-interface.png) |
 | **Sidebar Configuration** | ✅ **Captured** | Settings and configuration options | [06-sidebar-configuration.png](assets/screenshots/06-sidebar-configuration.png) |
 
 ### **UI/UX Examples**
