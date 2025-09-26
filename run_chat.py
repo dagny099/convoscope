@@ -130,9 +130,6 @@ st.markdown(  #Font-Awesome icons
     unsafe_allow_html=True)
 
 # ********** SETUP LAYOUT **********
-titleCol1, titleCol2 = st.columns([2, 1])
-tab1, tab2, tab3 = st.tabs(["Chat", "Converation History","Topics Extracted"])
-headerCol1, headerCol2 = tab1.columns([2, 1])
 
 
 def load_convo(name=None):
@@ -661,31 +658,120 @@ def create_html_report(conversation, summary=None):
     return html_content    
 
 
+def render_modern_header():
+    """Render the modern header with gradient background and professional navigation"""
+
+    # Get current provider for status chip (using correct session state key)
+    current_provider = st.session_state.get('llm_provider', 'openai')
+    provider_status = "✅" if st.session_state.llm_service.PROVIDERS[current_provider].available else "❌"
+
+    # Initialize navigation state if not exists
+    if 'current_view' not in st.session_state:
+        st.session_state.current_view = 'chat'
+
+    # Render header with gradient background
+    st.markdown(f"""
+        <div style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: -1rem -1rem 2rem -1rem;
+            padding: 1.5rem 2rem;
+            border-radius: 0 0 1rem 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        ">
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                max-width: 1200px;
+                margin: 0 auto;
+            ">
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                ">
+                    <div style="
+                        font-size: 2rem;
+                        font-weight: 700;
+                        color: white;
+                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+                        letter-spacing: -0.02em;
+                    ">🔍 Convoscope</div>
+                    <div style="
+                        background: rgba(255, 255, 255, 0.2);
+                        backdrop-filter: blur(10px);
+                        padding: 0.5rem 1rem;
+                        border-radius: 2rem;
+                        color: white;
+                        font-size: 0.85rem;
+                        font-weight: 500;
+                        border: 1px solid rgba(255, 255, 255, 0.3);
+                    ">{provider_status} {current_provider.title()}</div>
+                </div>
+                <div style="
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+                ">
+                    <div style="
+                        color: rgba(255, 255, 255, 0.9);
+                        font-size: 0.9rem;
+                        font-weight: 500;
+                    ">Multi-Provider AI Evaluation Platform</div>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Navigation buttons
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+
+    with col1:
+        if st.button("💬 Chat", key="nav_chat", use_container_width=True):
+            st.session_state.current_view = 'chat'
+            st.rerun()
+
+    with col2:
+        if st.button("📚 History", key="nav_history", use_container_width=True):
+            st.session_state.current_view = 'history'
+            st.rerun()
+
+    with col3:
+        if st.button("🏷️ Topics", key="nav_topics", use_container_width=True):
+            st.session_state.current_view = 'topics'
+            st.rerun()
+
+    with col4:
+        comparison_text = "🔀 Compare" if not st.session_state.get('comparison_mode', False) else "🔄 Single"
+        if st.button(comparison_text, key="nav_comparison", use_container_width=True):
+            st.session_state.comparison_mode = not st.session_state.get('comparison_mode', False)
+            st.rerun()
+
+
 # -------------------------------------------- #
 # Main app function
 def main():
 
-    # RUN SIDEBAR
+    # RUN SIDEBAR FIRST (to ensure provider state is updated)
     chat_settings = sidebar_configuration()
+
+    # RENDER MODERN HEADER (after sidebar to get correct provider status)
+    render_modern_header()
 
     # STATEFUL CONVERSATION HANDLING
     if "conversation" not in st.session_state:
         st.session_state['conversation'] = list()
 
-    titleCol1.title("Curious and Curiouser")
-    headerCol1.subheader("Down the rabbit hole:")
-    
-    # DISPLAY TITLE & IMAGE
-    titleCol2.markdown(image_with_aspect_ratio(st.session_state['where_image'], width=400, height=200), unsafe_allow_html=True)
+    # MAIN LAYOUT: Conditional rendering based on navigation state
+    current_view = st.session_state.get('current_view', 'chat')
 
-    # MAIN LAYOUT: Tab 1 has chat convo, Tab 2 has reversable convo, Tab 3 is for topic summary
+    # Chat functionality
+    if current_view == 'chat':
+        st.markdown("### 💬 Chat Interface")
 
-    # Tab 1: Chat functionality
-    with tab1:
         if 'load_msg' in st.session_state:
-            with headerCol2:
-                if 'success' in st.session_state.load_msg:
-                    st.success(st.session_state.load_msg['success'])
+            if 'success' in st.session_state.load_msg:
+                st.success(st.session_state.load_msg['success'])
                 # elif 'error' in st.session_state.load_msg:
                 #     st.sidebar.error(st.session_state.load_msg['error'])
                 # elif 'warning' in st.session_state.load_msg:
@@ -734,8 +820,8 @@ def main():
             with open(os.path.join(save_convo_path,'restore_last_convo.json'), 'w') as f:
                 json.dump(st.session_state.conversation, f)
 
-    # Tab 3: Display topic summary
-    with tab3:
+    # Topics functionality
+    elif current_view == 'topics':
         st.markdown("<h3>Topics extracted from current conversation</h3>", unsafe_allow_html=True)
         topicCols_Norm, topicCols_Reverse = st.columns([1, 1])
         orig_button_L, orig_button_R = topicCols_Norm.columns([1, 1])
@@ -785,8 +871,8 @@ def main():
                                             type="primary"
                                         )
 
-    # Tab 2: Running list of conversation history
-    with tab2:
+    # History functionality
+    elif current_view == 'history':
         st.header("Conversation History")
         reverse_order = st.checkbox("Reverse order", value=False)
         # V3 - Display the full conversation history
