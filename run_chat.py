@@ -125,9 +125,54 @@ st.set_page_config(
         "About": GET_HELP},
 )
 
-st.markdown(  #Font-Awesome icons
-    '<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">',
-    unsafe_allow_html=True)
+# Modern CSS styling and Font-Awesome icons
+st.markdown("""
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        .stApp {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* Modern Sidebar Styling */
+        .settings-modal {
+            padding: 1rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Button Enhancements */
+        .stButton > button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .stButton > button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Selectbox Styling */
+        .stSelectbox > div > div {
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Sidebar Section Headers */
+        .sidebar .markdown-text-container h4 {
+            color: #374151;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # ********** SETUP LAYOUT **********
 
@@ -267,158 +312,166 @@ def topic_extraction(conversation):
 
 def sidebar_configuration():
     """
-    Display the sidebar configuration options for the chat
+    Modern settings panel in sidebar with clean organization and preserved provider chip functionality
     """
+    st.sidebar.markdown("""
+        <div class="settings-modal">
+            <h3 style="margin-top: 0; color: #1a202c; font-weight: 600;">
+                <i class="fas fa-cog"></i> Settings
+            </h3>
+        </div>
+    """, unsafe_allow_html=True)
 
-    st.sidebar.markdown("<h2 style='padding: 0; margin-bottom: 10px;'> <u>HISTORY AND SETTINGS</u></h2>", unsafe_allow_html=True)
+    # Quick Actions Section
+    st.sidebar.markdown("#### 🔄 Quick Actions")
 
-    # Load Chat History or Reset via radio button selection:
-    st.sidebar.radio(
-        label="CHAT HISTORY:",
-        options = chat_history_options_labels, 
-        key='set_convo_status',
-        index=None,
-        captions=chat_history_options_captions,
-        on_change=choose_convo,
-        label_visibility="collapsed"
-    )
-    #Save conversation history when you enter a name in the text box & click button:
-    st.sidebar.markdown("Manually name & save this convo: ",unsafe_allow_html=True)
-    val = ""
-    if 'load_msg' in st.session_state:
-        if st.session_state.load_msg['file'] != 'restore_last_convo.json':
-            val = st.session_state.load_msg['file'].replace('.json','')
-    st.sidebar.text_input(label="S", value=val, key="manual_name", label_visibility="collapsed", on_change=save_convo)  #, on_change=lambda: st.session_state.update(manual_name=)  #
+    # Conversation management
+    col1, col2 = st.sidebar.columns(2)
+    with col1:
+        if st.button("🆕 New Chat", use_container_width=True):
+            st.session_state['conversation'] = list()
+            if 'user_input' in st.session_state:
+                del st.session_state['user_input']
+            st.success("Started new conversation")
 
-    # LLM Configuration settings
-    st.sidebar.markdown("<hr style='padding: 0px; margin-top: 5px;'>", unsafe_allow_html=True)
-    sideC1, sideC2 = st.sidebar.columns([1, 1])
-    sideC1.markdown("<h2 style='padding: 3px;'>LLM Configuration</h2>", unsafe_allow_html=True)
+    with col2:
+        if st.button("🔀 Random Settings", use_container_width=True):
+            # Randomize some settings
+            st.session_state.priming_text = random.choice(list(priming_messages.values()))
+            st.session_state.temperature = round(random.uniform(0.3, 0.9), 1)
+            st.success("Settings randomized!")
 
-    # Pick a random priming message
-    if "priming_text" not in st.session_state:
-        st.session_state['priming_key'] = 'default'
-        st.session_state['priming_text'] = priming_messages[st.session_state['priming_key']]
-        st.session_state['selectbox_choice'] = st.session_state['priming_key']
+    # Load/Save conversations
+    st.sidebar.markdown("#### 💾 Conversations")
 
-    # Update priming text via button
-    sideC2.button("Pick random 󠀠 󠀠:point_down: 󠀠", on_click=lambda: update_priming_text("button", new_value=random.choice(list(priming_messages.items()))))
-    # Update priming text via typing into box
-    st.sidebar.text_area(":rainbow[Prime the model with this message:]",  height=125, key="priming_text")
-    # Update priming text via selecting from a dropdown menu
-    st.sidebar.selectbox("Choose a priming message", 
-                        options=list(priming_messages.keys()), 
-                        key="selectbox_choice", 
-                        index=get_index(list(priming_messages.keys()), st.session_state.priming_key), 
-                        on_change=update_priming_text, # Pass the source and the new value
-                        )  
+    # Save current conversation
+    if st.session_state.conversation:
+        save_name = st.sidebar.text_input("💾 Save as:", placeholder="Enter conversation name")
+        if save_name:
+            save_convo(save_name)
 
-    # Temperature setting
-    if "temperature" not in st.session_state:
-        value = 0.7
-    else:
-        value = st.session_state.temperature
-    st.sidebar.slider("Predictablility of Responses (0: consistent, 1: varied)", min_value=0.0, max_value=1.0, step=0.1, format="%.1f", value=value, key="temperature")
+    # Load existing conversations
+    history_files = [f.replace('.json','') for f in os.listdir(save_convo_path) if f.endswith(".json") and f != 'restore_last_convo.json']
+    if history_files:
+        selected_convo = st.sidebar.selectbox("📁 Load conversation:", options=[None] + history_files, index=0)
+        if selected_convo:
+            load_convo(selected_convo)
+            st.sidebar.success(f"Loaded: {selected_convo}")
 
-    # LLM Provider selection - use dynamic providers
+    st.sidebar.markdown("---")
+
+    # LLM Configuration
+    st.sidebar.markdown("#### 🤖 LLM Configuration")
+
+    # Provider Selection - CRITICAL: This preserves our chip update functionality
     dynamic_providers = get_providers_dict()
     available_provider_names = list(dynamic_providers.keys())
-    
-    # Set default provider to first available one
-    if "llm_provider" not in st.session_state:
-        # Try to default to 'openai' if available, otherwise first available
-        if 'openai' in dynamic_providers:
-            st.session_state.llm_provider = 'openai'
-        else:
-            # Get the clean provider name (remove "(API key needed)" suffix)
-            clean_names = [name.split(' (')[0] for name in available_provider_names]
-            st.session_state.llm_provider = clean_names[0] if clean_names else 'openai'
-    
-    # Get current provider index
-    clean_current_provider = st.session_state.llm_provider.split(' (')[0]
-    provider_index = 0
-    for i, provider_name in enumerate(available_provider_names):
-        if provider_name.startswith(clean_current_provider):
-            provider_index = i
-            break
-    
-    selected_provider_display = st.sidebar.selectbox(
-        label="Choose a provider", 
-        options=available_provider_names, 
-        index=provider_index, 
-        key="provider_display"
+
+    # Clean provider names for display
+    clean_provider_names = [name.split(' (')[0] for name in available_provider_names]
+
+    if st.session_state.llm_provider not in clean_provider_names and clean_provider_names:
+        st.session_state.llm_provider = clean_provider_names[0]
+
+    current_index = 0
+    if st.session_state.llm_provider in clean_provider_names:
+        current_index = clean_provider_names.index(st.session_state.llm_provider)
+
+    selected_provider = st.sidebar.selectbox(
+        "Provider:",
+        options=clean_provider_names,
+        index=current_index
     )
-    
-    # Clean the provider name for internal use
-    st.session_state.llm_provider = selected_provider_display.split(' (')[0]
-    
-    # Show provider status
-    llm_service = st.session_state.llm_service
-    if st.session_state.llm_provider in llm_service.PROVIDERS:
-        provider_config = llm_service.PROVIDERS[st.session_state.llm_provider]
-        if provider_config.available:
-            st.sidebar.success(f"✅ {st.session_state.llm_provider.title()} is ready")
-        else:
-            st.sidebar.warning(f"⚠️ {st.session_state.llm_provider.title()} needs API key: {provider_config.env_key}")
-    
-    # Model selection - get models for the selected provider
-    available_models = llm_service.get_available_models(st.session_state.llm_provider)
-    if not available_models:
-        available_models = dynamic_providers.get(selected_provider_display, ["No models available"])
-    
-    # Set default model - prioritize gpt-4o-mini for OpenAI
-    if "selected_model" not in st.session_state or st.session_state.selected_model not in available_models:
-        if st.session_state.llm_provider == 'openai' and 'gpt-4o-mini' in available_models:
-            st.session_state.selected_model = 'gpt-4o-mini'
-        else:
-            st.session_state.selected_model = available_models[0] if available_models else "No models available"
-    
-    # Model selection dropdown
-    model_index = 0
-    if st.session_state.selected_model in available_models:
-        model_index = available_models.index(st.session_state.selected_model)
-    
-    st.sidebar.selectbox(
-        label="Choose a model", 
-        options=available_models, 
-        index=model_index, 
-        key="selected_model"
+    # CRITICAL: Direct assignment preserves chip update functionality
+    st.session_state.llm_provider = selected_provider
+
+    # Model Selection
+    available_models = st.session_state.llm_service.get_available_models(st.session_state.llm_provider)
+    if available_models and st.session_state.selected_model not in available_models:
+        st.session_state.selected_model = available_models[0]
+
+    if available_models:
+        model_index = available_models.index(st.session_state.selected_model) if st.session_state.selected_model in available_models else 0
+        st.sidebar.selectbox(
+            "Model:",
+            options=available_models,
+            index=model_index,
+            key="selected_model"
+        )
+
+    # Temperature
+    st.sidebar.slider(
+        "🌡️ Temperature (creativity):",
+        min_value=0.0, max_value=1.0, step=0.1,
+        value=st.session_state.temperature,
+        key="temperature",
+        help="Lower values = more consistent, Higher values = more creative"
     )
 
-    # ------------ INTERACTIVE ELEMENTS ON THE PAGE ------------  #
-    st.sidebar.markdown("<hr>", unsafe_allow_html=True)
-    st.sidebar.subheader("Interactive Elements")
+    # System Prompt
+    st.sidebar.markdown("#### 🎭 System Prompt")
 
-    # Limit the number of chats shown on screen
-    if "max_show_chats" not in st.session_state:
-        st.session_state.max_show_chats = None
-    tmp = st.sidebar.number_input("Limit maximum # chats displayed", min_value=1, max_value=None, value=st.session_state.max_show_chats)
-    st.session_state.max_show_chats = tmp
+    # Quick preset selection
+    priming_options = list(priming_messages.keys())
+    current_key = st.session_state.get('priming_key', 'default')
 
-    # Edit the image
-    if "where_image" not in st.session_state:  # Image location for the page header
-        # st.session_state.where_image = "https://www.barbhs.com/assets/images/bio-photo-1.jpg"
-        # st.session_state.where_image = "https://upload.wikimedia.org/wikipedia/commons/e/ec/Down_the_Rabbit_Hole.png"
-        # st.session_state.where_image = "https://jeffersonairplane.com/wp-content/uploads/2020/02/Timekeeper-804x1024.jpg"
-        st.session_state.where_image = "https://www.barbhs.com/assets/images/swirl_barb_logo.png"
-    tmp = st.sidebar.text_input("Header image:", value=st.session_state.where_image)
-    st.session_state.where_image = tmp
+    if current_key not in priming_options:
+        current_key = 'default'
+        st.session_state.priming_key = current_key
+        st.session_state.priming_text = priming_messages[current_key]
 
-    # TODO this doesn't really seem necessary anymore; refactor
-    # Aggregate chat settings to return to the main function 
-    chat_settings = {
-            "llm_provider": st.session_state.llm_provider,
-            "selected_model": st.session_state.selected_model,
-            "temperature": st.session_state.temperature,
-            "priming_text": st.session_state.priming_text,
-        }
+    preset_index = priming_options.index(current_key)
+    selected_preset = st.sidebar.selectbox(
+        "Preset:",
+        options=priming_options,
+        index=preset_index,
+        format_func=lambda x: x.title()
+    )
 
-    # Show Session State
-    st.sidebar.markdown("<hr>", unsafe_allow_html=True)
-    with st.sidebar.expander("Show session state:", expanded=False):
-        st.write(st.session_state)
+    if selected_preset != current_key:
+        st.session_state.priming_key = selected_preset
+        st.session_state.priming_text = priming_messages[selected_preset]
 
-    return chat_settings
+    # Custom prompt
+    st.sidebar.text_area(
+        "Custom prompt:",
+        value=st.session_state.priming_text,
+        height=100,
+        key="priming_text",
+        help="Customize how the AI should behave"
+    )
+
+    st.sidebar.markdown("---")
+
+    # Advanced Settings
+    with st.sidebar.expander("⚙️ Advanced Settings"):
+        st.number_input(
+            "Max messages to display:",
+            min_value=1, max_value=50,
+            value=st.session_state.get('max_show_chats', 10) or 10,
+            key="max_show_chats"
+        )
+
+        # Debug info
+        if st.checkbox("Show debug info"):
+            st.write("**Current Settings:**")
+            st.write(f"Provider: {st.session_state.llm_provider}")
+            st.write(f"Model: {st.session_state.selected_model}")
+            st.write(f"Temperature: {st.session_state.temperature}")
+            st.write(f"Messages: {len(st.session_state.conversation)}")
+
+        # Session State Display
+        if st.checkbox("Show session state"):
+            st.write("**Full Session State:**")
+            st.write(st.session_state)
+
+    # Return aggregated settings
+    return {
+        "llm_provider": st.session_state.llm_provider,
+        "selected_model": st.session_state.selected_model,
+        "temperature": st.session_state.temperature,
+        "priming_text": st.session_state.priming_text,
+    }
 
 
 def get_multi_provider_response(settings, question):
