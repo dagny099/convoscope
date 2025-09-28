@@ -1,0 +1,4 @@
+pytest
+pytest-playwright
+# playwright  # if you intentionally use it locally; this downloads browsers
+pipdeptree

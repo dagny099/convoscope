@@ -39,7 +39,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
   # logo: assets/logo.svg           # optional - removed broken reference
-  favicon: assets/favicon.png     # optional
+  favicon: assets/circle_icon.png     # Barbara's circle logo
   # Versioning stub (if you use mike)
   version:
     provider: mike

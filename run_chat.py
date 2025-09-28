@@ -145,7 +145,7 @@ st.markdown("""
 
         /* Button Enhancements */
         .stButton > button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             border: none;
             border-radius: 0.5rem;
             color: white;
@@ -155,7 +155,7 @@ st.markdown("""
 
         .stButton > button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
         }
 
         /* Selectbox Styling */
@@ -348,7 +348,7 @@ def sidebar_configuration():
             st.success("Started new conversation")
 
     with col2:
-        if st.button("🔀 Random Settings", use_container_width=True):
+        if st.button("🔀 Random", use_container_width=True):
             # Randomize some settings
             st.session_state.priming_text = random.choice(list(priming_messages.values()))
             st.session_state.temperature = round(random.uniform(0.3, 0.9), 1)
@@ -420,8 +420,10 @@ def sidebar_configuration():
         help="Lower values = more consistent, Higher values = more creative"
     )
 
+    st.sidebar.markdown("---")
+
     # System Prompt
-    st.sidebar.markdown("#### 🎭 System Prompt")
+    st.sidebar.markdown("#### 📝 System Prompt")
 
     # Quick preset selection
     priming_options = list(priming_messages.keys())
@@ -452,8 +454,6 @@ def sidebar_configuration():
         key="priming_text",
         help="Customize how the AI should behave"
     )
-
-    st.sidebar.markdown("---")
 
     # Advanced Settings
     with st.sidebar.expander("⚙️ Advanced Settings"):
@@ -737,10 +737,10 @@ def render_modern_header():
     # Render header with gradient background
     st.markdown(f"""
         <div style="
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
             margin: -1rem -1rem 2rem -1rem;
             padding: 1.5rem 2rem;
-            border-radius: 0 0 1rem 1rem;
+            border-radius: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         ">
             <div style="

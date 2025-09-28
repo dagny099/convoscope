@@ -1,0 +1,4 @@
+# Install only if you actually need these features live in prod
+pyarrow==17.0.0
+google-generativeai
+llama-parse==0.5.1
