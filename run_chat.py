@@ -314,6 +314,19 @@ def sidebar_configuration():
     """
     Modern settings panel in sidebar with clean organization and preserved provider chip functionality
     """
+    # Initialize session state first
+    if "conversation" not in st.session_state:
+        st.session_state['conversation'] = list()
+    if "temperature" not in st.session_state:
+        st.session_state.temperature = 0.7
+    if "priming_text" not in st.session_state:
+        st.session_state.priming_text = "You are a helpful assistant."
+        st.session_state.priming_key = 'default'
+    if "llm_provider" not in st.session_state:
+        st.session_state.llm_provider = 'openai'
+    if "selected_model" not in st.session_state:
+        st.session_state.selected_model = 'gpt-4o-mini'
+
     st.sidebar.markdown("""
         <div class="settings-modal">
             <h3 style="margin-top: 0; color: #1a202c; font-weight: 600;">
@@ -811,9 +824,7 @@ def main():
     # RENDER MODERN HEADER (after sidebar to get correct provider status)
     render_modern_header()
 
-    # STATEFUL CONVERSATION HANDLING
-    if "conversation" not in st.session_state:
-        st.session_state['conversation'] = list()
+    # Session state is now initialized in sidebar_configuration()
 
     # MAIN LAYOUT: Conditional rendering based on navigation state
     current_view = st.session_state.get('current_view', 'chat')
