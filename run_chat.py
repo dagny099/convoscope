@@ -416,7 +416,6 @@ def sidebar_configuration():
     st.sidebar.slider(
         "🌡️ Temperature (creativity):",
         min_value=0.0, max_value=1.0, step=0.1,
-        value=st.session_state.temperature,
         key="temperature",
         help="Lower values = more consistent, Higher values = more creative"
     )
