@@ -85,6 +85,7 @@ priming_messages = {
     "business": "You are a business professional with expertise in managing organizations and resources to achieve strategic goals and objectives.",
     "technology": "You are a technology professional with expertise in developing and implementing innovative solutions to solve complex problems.",
     "leadership": "You are a leader with expertise in inspiring and guiding individuals and teams to achieve common goals and objectives.",
+    "custom": ""  # Placeholder for manually edited custom prompts
 }
 
 GET_HELP = f"""
@@ -113,10 +114,15 @@ Here's a quick guide to help you get started:
 """
 # ============================================= #
 
+# STREAMLIT CODING STANDARDS:
+# - When using key= parameter for widgets, NEVER use value= parameter
+# - Let Streamlit manage values automatically through session state
+# - This prevents "widget created with default value + Session State API" warnings
+
 # Setup session
 st.set_page_config(
     page_title="I wonder...",
-    page_icon="🐇",
+    page_icon="circle_icon.png",
     layout="wide",
     initial_sidebar_state="auto",
     menu_items={
@@ -145,7 +151,7 @@ st.markdown("""
 
         /* Button Enhancements */
         .stButton > button {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
             border: none;
             border-radius: 0.5rem;
             color: white;
@@ -155,7 +161,7 @@ st.markdown("""
 
         .stButton > button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
         }
 
         /* Selectbox Styling */
@@ -425,9 +431,27 @@ def sidebar_configuration():
     # System Prompt
     st.sidebar.markdown("#### 📝 System Prompt")
 
-    # Quick preset selection
+    # Quick preset selection with automatic "custom" detection
     priming_options = list(priming_messages.keys())
     current_key = st.session_state.get('priming_key', 'default')
+    current_text = st.session_state.get('priming_text', priming_messages['default'])
+
+    # Check if current text matches any preset (except "custom")
+    matching_preset = None
+    for key, text in priming_messages.items():
+        if key != "custom" and text == current_text:
+            matching_preset = key
+            break
+
+    # If text doesn't match any preset, it's custom
+    if matching_preset is None and current_text and current_text != priming_messages.get('custom', ''):
+        current_key = 'custom'
+        priming_messages['custom'] = current_text  # Update custom placeholder
+        st.session_state.priming_key = 'custom'
+    elif matching_preset and current_key != matching_preset:
+        # Update key to match the content
+        current_key = matching_preset
+        st.session_state.priming_key = matching_preset
 
     if current_key not in priming_options:
         current_key = 'default'
@@ -444,12 +468,13 @@ def sidebar_configuration():
 
     if selected_preset != current_key:
         st.session_state.priming_key = selected_preset
-        st.session_state.priming_text = priming_messages[selected_preset]
+        if selected_preset != 'custom':
+            st.session_state.priming_text = priming_messages[selected_preset]
 
     # Custom prompt
+    # STREAMLIT BEST PRACTICE: When using key= parameter, do NOT use value= - let Streamlit manage via session state automatically
     st.sidebar.text_area(
         "Custom prompt:",
-        value=st.session_state.priming_text,
         height=100,
         key="priming_text",
         help="Customize how the AI should behave"
@@ -737,7 +762,7 @@ def render_modern_header():
     # Render header with gradient background
     st.markdown(f"""
         <div style="
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
             margin: -1rem -1rem 2rem -1rem;
             padding: 1.5rem 2rem;
             border-radius: 1rem;

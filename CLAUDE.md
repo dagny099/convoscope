@@ -8,8 +8,8 @@ Convoscope is a production-ready multi-provider AI chat application built with S
 
 ## Current Architecture (Post-Refactoring)
 
-### Modular Service Architecture
-- **Presentation Layer**: `run_chat.py` (444 lines) - Clean UI logic with Streamlit
+### Modern UI/UX Architecture
+- **Presentation Layer**: `run_chat.py` (971 lines) - Professional portfolio-grade interface with gradient header, navigation system, and responsive design
 - **Service Layer**: `src/services/` - Business logic and LLM provider management
 - **Utility Layer**: `src/utils/` - Helper functions and session management  
 - **Configuration**: `src/config/` - Settings and provider configuration
@@ -107,11 +107,19 @@ Located in `src/services/llm_service.py`:
 - FontAwesome icons for visual enhancement
 - Complete conversation history and metadata included
 
+### Modern UI/UX Features (2024 Redesign)
+- **Professional Header**: Gradient design with provider status chips and navigation buttons
+- **Responsive Navigation**: Modern button-based system replacing traditional radio buttons
+- **Dark/Light Mode Compatibility**: Neutral color scheme that adapts to user preferences
+- **Smart System Prompts**: Automatic detection of custom vs preset prompts with "Custom" labeling
+- **Visual Hierarchy**: Organized sidebar sections with proper spacing and visual separators
+- **Brand Integration**: Custom favicon and consistent color theming throughout interface
+
 ## Current File Structure (Modular Architecture)
 
 ```
 convoscope/
-├── run_chat.py              # Main Streamlit UI (444 lines)
+├── run_chat.py              # Main Streamlit UI (971 lines) - Modern portfolio-grade interface
 ├── requirements.txt         # Python dependencies
 ├── CLAUDE.md               # Development guidance (this file)
 ├── README.md               # Portfolio presentation
@@ -172,3 +180,24 @@ convoscope/
 - **Integration tests**: Full workflows with Playwright automation
 - **Error handling tests**: Failure scenarios and recovery testing
 - **Visual regression**: Screenshot-based UI consistency
+
+## Streamlit Development Standards
+
+### **Widget Best Practices**
+- **NEVER use both `value=` and `key=` parameters together** - This causes "widget created with default value + Session State API" warnings
+- **Preferred Pattern**: Use only `key="my_key"` and let Streamlit manage values via `st.session_state.my_key`
+- **Example**:
+  ```python
+  # ✅ Correct: Automatic session state management
+  st.slider("Temperature:", key="temperature")
+
+  # ❌ Incorrect: Causes warnings
+  st.slider("Temperature:", value=st.session_state.temperature, key="temperature")
+  ```
+
+### **UI/UX Design Principles**
+- **Neutral Color Schemes**: Use professional gradients that work in both dark and light modes
+- **Consistent Spacing**: Visual hierarchy through proper use of dividers and section headers
+- **Smart Defaults**: Auto-detection of user modifications (e.g., custom prompts vs presets)
+- **Responsive Design**: Button sizes and layouts that adapt to content
+- **Professional Branding**: Consistent favicon, color theming, and visual identity
