@@ -49,9 +49,9 @@ plugins:
   - search
   # If you're on recent mkdocs-material (≥9.4), Mermaid via superfences is enough.
   # If you prefer the standalone plugin, add `- mermaid2` and pip install it (see below).
-  - git-revision-date-localized:
-      type: timeago
-      fallback_to_build_date: true
+  #- git-revision-date-localized:
+  #    type: timeago
+  #    fallback_to_build_date: true
   - minify:
       minify_html: true
 
