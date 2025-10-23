@@ -43,7 +43,7 @@ class LLMService:
         ),
         'google': LLMProvider(
             name='google',
-            models=['gemini-1.5-pro-latest', 'gemini-1.5-flash-latest'],
+            models=['gemini-2.5-flash', 'gemini-2.5-pro'],
             env_key='GEMINI_API_KEY'
         )
     }
