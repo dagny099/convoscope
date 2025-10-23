@@ -312,7 +312,7 @@ Convoscope is documented with **MkDocs**:
 - API usage examples  
 - Before/after metrics and benchmarks  
 
-👉 Explore the docs: [link being updated super shortly]
+👉 Explore the docs: **[https://docs.barbhs.com/convoscope](https://docs.barbhs.com/convoscope)**
 
 ---
 

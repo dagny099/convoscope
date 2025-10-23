@@ -14,7 +14,7 @@ Before installing Convoscope, ensure your system meets these requirements:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/dagny099/convoscope.git
 cd convoscope
 
 # Switch to the improved branch (if applicable)

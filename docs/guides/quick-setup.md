@@ -13,7 +13,7 @@ Get Convoscope running with minimal configuration for immediate testing.
 
 ```bash
 # Clone and setup
-git clone <repository-url>
+git clone https://github.com/dagny099/convoscope.git
 cd convoscope
 pip install -r requirements.txt
 

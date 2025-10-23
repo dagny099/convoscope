@@ -20,7 +20,7 @@ Get up and running in 3 minutes:
 
 ```bash
 # 1. Clone and install
-git clone <repository-url>
+git clone https://github.com/dagny099/convoscope.git
 cd convoscope
 pip install -r requirements.txt
 

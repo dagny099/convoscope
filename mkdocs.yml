@@ -1,7 +1,7 @@
 site_name: "🗨️ Convoscope: Multi-Provider AI Chat"
 site_description: "Professional portfolio project demonstrating full-stack development, testing practices, and LLM integration"
 site_author: "Barbara — Data Science Portfolio"
-site_url: "https://convoscope.yourdomain.com"         # ← set if you’ve mapped a custom domain
+site_url: "https://docs.barbhs.com/convoscope"
 repo_url: "https://github.com/dagny099/convoscope"     # ← point to your actual repo
 repo_name: "dagny099/convoscope"
 edit_uri: "edit/main/docs/"                            # ← enables “edit this page” links
@@ -112,11 +112,11 @@ extra:
       link: https://github.com/dagny099
       name: GitHub @dagny099
     - icon: fontawesome/brands/linkedin
-      link: https://www.linkedin.com/in/your-profile/
+      link: https://www.linkedin.com/in/barbara-hidalgo-sotelo/
       name: LinkedIn
-  analytics:
-    provider: google
-    property: G-XXXXXXXXXX      # ← replace with your GA4 property
+  # analytics:
+    # provider: google
+    # property: G-XXXXXXXXXX      # Uncomment and add GA4 property if needed
 
 extra_css:
   - assets/custom.css

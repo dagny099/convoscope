@@ -13,9 +13,11 @@ This blog series chronicles the transformation of Convoscope from a 696-line mon
 1. **[The Portfolio Project Dilemma: Learning vs Showing Off](01-portfolio-project-dilemma.md)**  
    *The fundamental tension between building to learn and building to impress, and how to bridge that gap.*
 
-### **🚧 Coming Soon**  
+### **🚧 Coming Soon**
 
-2. **Architecture Decisions That Impress Hiring Managers**  
+📍 **See the complete project**: [Convoscope Project Page](https://www.barbhs.com/projects/convoscope/)
+
+2. **Architecture Decisions That Impress Hiring Managers**
    *Why the choices you make matter more than the code you write*
 
 3. **Testing Strategies That Actually Demonstrate Skill**  
