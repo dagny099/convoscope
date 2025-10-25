@@ -42,22 +42,21 @@
 
 ## 📸 Screenshots
 
-### **Core Functionality Proof**
+### **Currently Available**
 | Screenshot | Status | Purpose | Location |
 |------------|--------|---------|----------|
-| **Multi-Provider Selection** | ✅ **Captured** | Provider dropdown with OpenAI, Anthropic, Gemini | [screenshots.md](project-details/screenshots.md), [02-provider-selector-open.png](assets/screenshots/02-provider-selector-open.png) |
-| **Main Chat Interface** | ✅ **Captured** | Clean, professional UI | [screenshots.md](project-details/screenshots.md), [01-hero-interface.png](assets/screenshots/01-hero-interface.png) |
-| **Full Application View** | ✅ **Captured** | Complete interface with all components | [02-full-interface.png](assets/screenshots/02-full-interface.png) |
-| **Mobile Responsive** | ✅ **Captured** | Cross-device compatibility demonstration | [screenshots.md](project-details/screenshots.md), [05-mobile-interface.png](assets/screenshots/05-mobile-interface.png) |
-| **Sidebar Configuration** | ✅ **Captured** | Settings and configuration options | [06-sidebar-configuration.png](assets/screenshots/06-sidebar-configuration.png) |
+| **Hero Interface** | ✅ **Available** | Main chat interface - clean, professional UI | [screenshots.md](project-details/screenshots.md), [01-hero-interface.png](assets/screenshots/01-hero-interface.png) |
 
-### **UI/UX Examples**
-| Screenshot | Status | Purpose | File Link |
-|------------|--------|---------|-----------|
-| **Hero Interface** | ✅ **1200x600** | Perfect size for README header | [01-hero-interface.png](assets/screenshots/01-hero-interface.png) |
-| **Full Interface** | ✅ **1200x800** | Complete application view | [01-main-interface.png](assets/screenshots/01-main-interface.png) |
-| **Error Handling UI** | ✅ **800x200** | Graceful error message display | [04-error-handling-stAlert.png](assets/screenshots/04-error-handling-stAlert.png) |
-| **Mobile Interface** | ✅ **375x667** | Mobile responsive design proof | [05-mobile-interface.png](assets/screenshots/05-mobile-interface.png) |
+### **Pending Retake**
+| Screenshot | Status | Purpose | Notes |
+|------------|--------|---------|-------|
+| **Multi-Provider Selection** | 🔄 **Retake Needed** | Provider dropdown with OpenAI, Anthropic, Gemini | Will capture updated UI |
+| **Full Application View** | 🔄 **Retake Needed** | Complete interface with all components | Will capture updated layout |
+| **Error Handling UI** | 🔄 **Retake Needed** | Graceful error message display | Will capture updated alerts |
+| **Mobile Responsive** | 🔄 **Retake Needed** | Cross-device compatibility demonstration | Will capture mobile viewport |
+| **Sidebar Configuration** | 🔄 **Retake Needed** | Settings and configuration options | Will capture updated sidebar |
+| **Compare View** | 🔄 **Retake Needed** | Side-by-side model comparison interface | Will capture updated compare UI |
+| **Results Viewer** | 🔄 **Retake Needed** | Filterable experiment logs with CSV export | Will capture updated results view |
 
 ### **Before/After Comparisons**
 | Screenshot | Status | Purpose | Planned Location |

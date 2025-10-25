@@ -9,73 +9,37 @@ Visual documentation of Convoscope's interface and functionality.
 ![Main Interface](../assets/screenshots/01-hero-interface.png)
 
 **Features shown:**
-- Multi-provider LLM selection dropdown
-- Clean, responsive chat interface
-- Real-time conversation display
-- Professional Streamlit-based design
+- **Multi-provider LLM selection** - Dropdown for OpenAI, Anthropic Claude, and Google Gemini
+- **Clean, responsive chat interface** - Professional Streamlit-based design
+- **Real-time conversation display** - Smooth message flow with user and assistant messages
+- **Configuration sidebar** - Temperature, token limits, and system prompt controls
+- **Conversation management** - Save, load, and export functionality
+- **Provider status indicators** - Visual feedback on active provider and model
 
-### Multi-Provider Selection
+## Key Capabilities Demonstrated
 
-![Provider Selection](../assets/screenshots/02-provider-selector-open.png)
+The screenshot captures the core functionality of Convoscope:
 
-**Providers available:**
-- **OpenAI** - GPT-4o-mini, GPT-4o models
-- **Anthropic** - Claude-3.5-Sonnet, Claude-3-Haiku
-- **Google** - Gemini-1.5-Pro, Gemini-Pro
-- **Intelligent fallback** - Automatic switching on provider failures
+1. **Multi-Provider Architecture** - Seamless switching between OpenAI, Anthropic, and Google Gemini
+2. **Intelligent Fallback** - Automatic provider switching when failures occur
+3. **Conversation Persistence** - Save and load conversation history
+4. **Professional UI/UX** - Clean, modern interface suitable for production use
+5. **Responsive Design** - Works on desktop and mobile devices
+6. **Error Resilience** - Graceful handling of API failures and edge cases
 
-### Complete Application View
+## Additional Screenshots (Coming Soon)
 
-![Full Interface](../assets/screenshots/02-full-interface.png)
+The following screenshots are being updated to reflect the latest interface improvements:
 
-**Architecture components:**
-- **Presentation Layer** - Clean Streamlit UI
-- **Configuration Panel** - Provider and model selection
-- **Conversation Area** - Message display and interaction
-- **Service Integration** - Multiple LLM providers unified
+- **Provider Selection Dropdown** - Detailed view of multi-provider options
+- **Full Application View** - Complete layout with all UI components
+- **Error Handling** - User-friendly error messages and recovery flows
+- **Mobile Interface** - Responsive design on mobile viewports
+- **Compare View** - Side-by-side model comparison interface
+- **Results Viewer** - Experiment logs with filters and export options
 
-## Error Handling
-
-### User-Friendly Error Messages
-
-![Error Handling](../assets/screenshots/04-error-handling-stAlert.png)
-
-**Error handling features:**
-- Clear, actionable error messages
-- No technical jargon exposed to users
-- Graceful degradation when providers fail
-- Helpful guidance for common issues
-
-## Cross-Platform Support
-
-### Mobile Interface
-
-![Mobile Interface](../assets/screenshots/05-mobile-interface.png)
-
-**Mobile features:**
-- Responsive design adapts to screen size
-- Touch-friendly interface elements
-- Full functionality on mobile devices
-- Consistent behavior across platforms
-
-### Configuration Interface
-
-![Sidebar Configuration](../assets/screenshots/06-sidebar-configuration.png)
-
-**Configuration options:**
-- Provider selection and status
-- Model selection per provider
-- Temperature and token settings
-- Conversation management tools
-
-## Technical Implementation
-
-All screenshots demonstrate:
-- **Production-ready UI** - Professional appearance suitable for real-world use
-- **Multi-provider architecture** - Seamless switching between AI services
-- **Error resilience** - Graceful handling of failures and edge cases
-- **Cross-platform compatibility** - Works on desktop and mobile devices
+> See the [Visual Assets Index](../visual-assets-index.md) for the complete screenshot roadmap.
 
 ---
 
-*Screenshots captured from live application running on macOS with Chrome browser*
+*Screenshot captured from live application running on macOS with Chrome browser*

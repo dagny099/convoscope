@@ -50,15 +50,18 @@ monolithic prototype to production-grade system—complete with architecture doc
 All screenshots live in [`docs/assets/screenshots/`](docs/assets/screenshots/) and are catalogued in the
 [Visual Assets Index](docs/visual-assets-index.md).
 
-| Feature | Screenshot | Description |
-|---------|------------|-------------|
-| **Hero Interface** | ![Main interface](docs/assets/screenshots/01-hero-interface.png) | Primary chat layout with provider context and conversation tools |
-| **Provider Selection** | ![Provider switching](docs/assets/screenshots/02-provider-selector-open.png) | Dropdown for OpenAI, Anthropic, and Gemini with status indicators |
-| **Full Interface** | ![Full application view](docs/assets/screenshots/02-full-interface.png) | Complete layout showing chat history, prompts, and settings |
-| **Error Handling** | ![Error handling alert](docs/assets/screenshots/04-error-handling-stAlert.png) | Friendly recovery messages when providers fail |
-| **Mobile Responsive** | ![Mobile interface](docs/assets/screenshots/05-mobile-interface.png) | Narrow viewport experience for phones and tablets |
-| **Compare View** | ![Model comparison](docs/assets/screenshots/07-compare-view.png) | Side-by-side evaluation and blind scoring mode |
-| **Results Viewer** | ![Experiment results](docs/assets/screenshots/08-results-view.png) | Filterable experiment logs with CSV export |
+### Main Interface
+
+![Convoscope Chat Interface](docs/assets/screenshots/01-hero-interface.png)
+
+**The Convoscope interface showcases:**
+- **Multi-provider LLM selection** - Switch between OpenAI, Anthropic Claude, and Google Gemini
+- **Clean, responsive design** - Professional Streamlit-based UI that works on desktop and mobile
+- **Real-time conversation** - Smooth chat experience with automatic provider fallback
+- **Configuration controls** - Temperature, token limits, and system prompts in the sidebar
+- **Conversation management** - Save, load, and export conversation history
+
+> 📸 *Additional screenshots (provider selection, error handling, mobile view, compare mode, and results viewer) are being updated and will be available soon. See the [Visual Assets Index](docs/visual-assets-index.md) for the complete catalog.*
 
 ---
 

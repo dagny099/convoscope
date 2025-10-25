@@ -66,22 +66,13 @@ flowchart LR
 ### Multiple AI Providers
 Choose from three leading AI providers:
 
-[![Provider Selection](assets/screenshots/02-provider-selector-open.png){: target="_blank"}](assets/screenshots/02-provider-selector-open.png)
-*Provider selection dropdown - click to enlarge*
-
 - **OpenAI** (GPT-4, GPT-3.5) - Most popular, fast responses
 - **Anthropic** (Claude) - Great reasoning, longer context
 - **Google** (Gemini) - Cost-effective, multimodal
 
-### Automatic Error Handling
-When things go wrong, Convoscope handles it gracefully:
-
-[![Error Handling](assets/screenshots/04-error-handling-stAlert.png){: target="_blank"}](assets/screenshots/04-error-handling-stAlert.png)
-*User-friendly error messages - click to enlarge*
+When one provider is unavailable, Convoscope automatically switches to another, ensuring uninterrupted conversations.
 
 ### Conversation Management
-[![Full Interface](assets/screenshots/02-full-interface.png){: target="_blank"}](assets/screenshots/02-full-interface.png)
-*Complete interface with conversation management - click to enlarge*
 
 - Save conversations with custom names
 - Load previous chat sessions
@@ -89,8 +80,11 @@ When things go wrong, Convoscope handles it gracefully:
 - Auto-backup prevents data loss
 
 ### Mobile-Friendly Design
-[![Mobile Interface](assets/screenshots/05-mobile-interface.png){: target="_blank"}](assets/screenshots/05-mobile-interface.png)
-*Responsive mobile interface - click to enlarge*
+
+Responsive interface that works seamlessly on desktop, tablet, and mobile devices with consistent functionality across all platforms.
+
+!!! info "Screenshots being updated"
+    Additional screenshots showing provider selection, error handling, mobile interface, and other features are currently being updated to reflect the latest UI improvements. See the [Visual Assets Index](visual-assets-index.md) for status updates.
 
 ## System Architecture
 
