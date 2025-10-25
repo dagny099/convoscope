@@ -99,6 +99,18 @@ site/
 conversation_history/*
 !conversation_history/.gitkeep
 
+# Playwright MCP server artifacts
+.playwright-mcp/
+
+# Experiments data (user-generated results)
+experiments/results.jsonl
+experiments/*_with_scores.csv
+experiments/preferences.csv
+
+# WIP content (not ready for portfolio)
+/blog/
+/diagrams/
+
 # If you truly want to ignore any 'Tmp' dirs, prefer explicit paths:
 # Tmp**  <-- (too broad; can match unexpected files)
 # Replace with:

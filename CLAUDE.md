@@ -9,10 +9,10 @@ Convoscope is a production-ready multi-provider AI chat application built with S
 ## Current Architecture (Post-Refactoring)
 
 ### Modern UI/UX Architecture
-- **Presentation Layer**: `run_chat.py` (971 lines) - Professional portfolio-grade interface with gradient header, navigation system, and responsive design
+- **Presentation Layer**: `run_chat.py` (1,426 lines) - Professional portfolio-grade interface with gradient header, navigation system, responsive design, and model comparison UI
 - **Service Layer**: `src/services/` - Business logic and LLM provider management
-- **Utility Layer**: `src/utils/` - Helper functions and session management  
-- **Configuration**: `src/config/` - Settings and provider configuration
+- **Utility Layer**: `src/utils/` - Helper functions and session management
+- **Experiments Module**: `src/experiments/` - Model comparison, metrics, and blind scoring functionality
 
 ### Multi-Provider LLM Support
 - **Active Providers**: OpenAI, Anthropic Claude, Google Gemini
@@ -43,6 +43,30 @@ export OPENAI_API_KEY="your_api_key_here"
 streamlit run run_chat.py
 ```
 
+**Navigation:**
+- **Chat**: Standard conversational interface with provider selection
+- **Compare View**: Side-by-side model comparison with blind scoring
+- **Results**: View and export comparison results with filters
+
+### Deployment
+
+**Docker:**
+```bash
+# Build the container
+docker build -t convoscope .
+
+# Run with environment variables
+docker run -p 8501:8501 --env-file .env convoscope
+```
+
+**Google Cloud Run:**
+```bash
+# Deploy using the provided script
+./deploy_cloud_run_container.sh
+```
+
+The application includes production-ready deployment configurations with proper environment variable handling and health checks.
+
 ### Testing
 ```bash
 # Run all tests (unit + integration)
@@ -67,8 +91,9 @@ pytest tests/integration/ -v  # Integration tests only
 - **Core**: `streamlit`, `llama-index` (v0.11.4), `openai` (≤1.43.0)
 - **Testing**: `pytest`, `playwright`, `pytest-asyncio`
 - **Code Quality**: `radon` (complexity analysis), `cloc` (line counting)
-- **Data processing**: `pandas`, `numpy`, `pyarrow`
-- **Additional**: `markdown`, `httpx`, `protobuf`
+- **Data Processing**: `pandas`, `numpy`, `pyarrow`
+- **Documentation**: `mkdocs`, `mkdocs-material` (for docs site)
+- **Additional**: `markdown`, `httpx`, `protobuf`, `pyyaml` (for config files)
 
 ## Configuration
 
@@ -81,13 +106,20 @@ pytest tests/integration/ -v  # Integration tests only
   - `DEFAULT_LLM_PROVIDER`: Primary provider selection
   - `DEFAULT_TEMPERATURE`: Response creativity (0.0-1.0)
 
-### Multi-Provider Configuration  
+### Multi-Provider Configuration
 Located in `src/services/llm_service.py`:
 - **OpenAI**: `gpt-4o-mini`, `gpt-4o`, `gpt-3.5-turbo`
-- **Anthropic**: `claude-3-5-sonnet`, `claude-3-haiku`  
-- **Google**: `gemini-1.5-pro`, `gemini-pro`
+- **Anthropic**: `claude-3-5-sonnet`, `claude-3-haiku`
+- **Google**: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-pro`
 - **Fallback Logic**: Automatic provider switching with exponential backoff
 - **Health Checks**: Provider availability monitoring
+
+### Model Comparison Configuration
+Located in `experiments/`:
+- **Pricing Data**: `pricing.yaml` - Provider/model pricing for cost estimation
+- **Prompt Sets**: `prompts.yaml` - Baseline prompts for systematic testing
+- **Results Storage**: `results.jsonl` - Append-only log of all comparisons
+- **Cached Demo**: `default_compare_cache.json` - Fast first-run experience
 
 ## Key Features Implementation
 
@@ -107,22 +139,42 @@ Located in `src/services/llm_service.py`:
 - FontAwesome icons for visual enhancement
 - Complete conversation history and metadata included
 
+### Model Comparison & Results (Experiments)
+- **Compare View**: Side-by-side evaluation of 2-4 provider/model pairs on the same prompt
+- **Blind Scoring**: Randomized A/B/C labels to reduce bias with 5-point rubric (correctness, usefulness, clarity, safety, overall)
+- **Quick Winner Selection**: Radio button interface for fast preference indication
+- **Metrics Tracking**: Latency (ms), token counts, estimated costs per response
+- **JSONL Logging**: All results and scores appended to `experiments/results.jsonl`
+- **Results Viewer**: Filter by date/tags/models, preview entries, export to CSV
+- **Prompt Caching**: Default cached demo prompt for fast first-run experience
+- **Detailed Guide**: See `docs/guides/model-comparison.md` for full documentation
+
 ### Modern UI/UX Features (2024 Redesign)
 - **Professional Header**: Gradient design with provider status chips and navigation buttons
+- **Three-Tab Navigation**: Chat, Compare View, and Results with CSS-variable theming
 - **Responsive Navigation**: Modern button-based system replacing traditional radio buttons
 - **Dark/Light Mode Compatibility**: Neutral color scheme that adapts to user preferences
 - **Smart System Prompts**: Automatic detection of custom vs preset prompts with "Custom" labeling
 - **Visual Hierarchy**: Organized sidebar sections with proper spacing and visual separators
 - **Brand Integration**: Custom favicon and consistent color theming throughout interface
+- **Default Prompt Caching**: Fast first-run experience with cached demo responses
 
 ## Current File Structure (Modular Architecture)
 
 ```
 convoscope/
-├── run_chat.py              # Main Streamlit UI (971 lines) - Modern portfolio-grade interface
-├── requirements.txt         # Python dependencies
+├── run_chat.py              # Main Streamlit UI (1,426 lines) - Modern portfolio-grade interface
+├── requirements.txt         # Python dependencies (core)
+├── requirements-dev.txt     # Development dependencies
+├── requirements-docs.txt    # Documentation dependencies
+├── requirements-extras.txt  # Optional extras
 ├── CLAUDE.md               # Development guidance (this file)
 ├── README.md               # Portfolio presentation
+├── pytest.ini              # Test configuration
+├── mkdocs.yml              # Documentation site configuration
+├── Dockerfile              # Container build configuration
+├── Procfile                # Heroku deployment configuration
+├── deploy_cloud_run_container.sh # Google Cloud Run deployment script
 │
 ├── src/                    # Modular source code
 │   ├── services/
@@ -131,25 +183,42 @@ convoscope/
 │   ├── utils/
 │   │   ├── helpers.py             # Utility functions
 │   │   └── session_state.py       # Session management
-│   └── config/
-│       └── settings.py            # Configuration management
+│   └── experiments/
+│       ├── compare.py             # Model comparison runner
+│       ├── metrics.py             # Token/cost estimation
+│       └── io.py                  # JSONL logging utilities
 │
 ├── tests/                  # Comprehensive test suite (80+ tests)
 │   ├── unit/              # Unit tests with mocking
-│   ├── integration/       # End-to-end Playwright tests  
+│   ├── integration/       # End-to-end Playwright tests
 │   ├── mocks/            # Mock objects and fixtures
 │   └── conftest.py       # Test configuration
+│
+├── experiments/           # Model comparison data & configuration
+│   ├── results.jsonl     # JSONL log of all comparison results
+│   ├── prompts.yaml      # Baseline prompt sets for testing
+│   ├── pricing.yaml      # Provider pricing for cost estimation
+│   └── default_compare_cache.json # Cached demo prompt responses
 │
 ├── docs/                  # Professional documentation
 │   ├── architecture/      # System design & technical decisions
 │   ├── api/              # API reference documentation
 │   ├── guides/           # Setup and configuration guides
+│   │   └── model-comparison.md # Model comparison feature guide
 │   ├── metrics/          # Codebase analysis and measurements
 │   ├── assets/           # Diagrams, screenshots, visual assets
 │   └── visual-assets-index.md # Complete asset directory
 │
 ├── blog/                  # Portfolio engineering blog series
 ├── scripts/               # Development and automation scripts
+│   ├── capture-screenshots.py    # Automated screenshot generation
+│   ├── capture-compare-results.py # Results viewer screenshots
+│   └── manual-screenshots.py     # Manual screenshot utilities
+│
+├── diagrams/              # Mermaid diagram source files
+│   ├── architecture.mmd   # System architecture diagram
+│   └── data_flow.mmd      # Data flow diagram
+│
 └── conversation_history/  # Local conversation storage
     ├── *.json            # Saved conversations
     └── restore_last_convo.json # Auto-save backup
