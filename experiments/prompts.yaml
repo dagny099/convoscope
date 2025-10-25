@@ -1,0 +1,28 @@
+version: 1
+metadata:
+  name: baseline_set
+  description: Baseline for side-by-side model comparison with approachable, non-technical prompts
+  default_temperature: 0.7
+combos:
+  - provider: openai
+    model: gpt-4o-mini
+  - provider: anthropic
+    model: claude-3-haiku-20240307
+  - provider: google
+    model: gemini-2.5-flash
+prompts:
+  - id: p_bio_001
+    text: "Explain how vaccines train the immune system using everyday analogies. Keep it under 120 words."
+    tags: [biology, everyday, concise]
+  - id: p_cogsci_001
+    text: "Describe 'working memory' with a relatable example from daily life, and give one strategy to improve it."
+    tags: [cognitive-science, everyday]
+  - id: p_sports_001
+    text: "Coach a beginner on how to pace themselves for a 5K run. Include a simple week plan."
+    tags: [sports, running, practical]
+  - id: p_everyday_001
+    text: "Compare two ways to remember names at a party. List pros and cons for each."
+    tags: [everyday, memory, compare]
+  - id: p_bio_002
+    text: "Explain gut microbiome diversity and why it matters, as if to a curious teenager."
+    tags: [biology, everyday]

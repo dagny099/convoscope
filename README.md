@@ -62,6 +62,8 @@ timeline
 | **Main Interface** | ![Main Interface](docs/assets/screenshots/01-hero-interface.png) | Clean, professional chat interface with multi-provider support |
 | **Provider Selection** | ![Provider Switching](docs/assets/screenshots/02-provider-selector-open.png) | Dropdown showing OpenAI, Anthropic, and Gemini options |
 | **Mobile Responsive** | ![Mobile Interface](docs/assets/screenshots/05-mobile-interface.png) | Fully responsive design across all devices |
+| **Compare View** | ![Compare View](docs/assets/screenshots/07-compare-view.png) | Side-by-side model selection and blind scoring UI |
+| **Results Viewer** | ![Results Viewer](docs/assets/screenshots/08-results-view.png) | Filters, preview table, and CSV exports |
 
 **Key Demonstrations:**
 - **Provider Switching:** Zero-downtime fallbacks during API outages
@@ -113,6 +115,12 @@ streamlit run run_chat.py
 - 🎨 **Polished UI/UX** — responsive layout, dark/light mode, provider status indicators  
 - 🧪 **Robust Testing** — 50+ unit tests, 20+ integration tests (Playwright + pytest)  
 - 📑 **Extensive Documentation** — MkDocs site with diagrams, metrics, and examples  
+
+### Model Comparison & Results (new)
+- Compare 2–4 provider/model pairs on the same prompt with blind scoring (A/B/C), uniform temperature, and quick “winner” selection.
+- Logs results and scores to `experiments/results.jsonl` for analysis; exports CSVs: `results_with_scores.csv` and `preferences.csv`.
+- Default cached demo prompt for fast first-run: “Why is the sky blue — Explain it to a blind person.”
+- Full details: [Model Comparison Guide](docs/guides/model-comparison.md)
 
 ---
 
@@ -223,7 +231,7 @@ flowchart TB
     class OPENAI,ANTHROPIC,GOOGLE external
 ```
 
-➡️ Deeper dive: **[Architecture Docs](docs/architecture.md)**
+➡️ Deeper dive: **[Architecture Docs](docs/architecture/system-overview.md)**
 
 ---
 
@@ -264,7 +272,7 @@ flowchart TD
     style I fill:#ffebee
 ```
 
-➡️ Deeper dive: **[Data Flow Docs](docs/data-flow.md)**
+➡️ Deeper dive: **[Data Flow Docs](docs/architecture/data-flow.md)**
 
 ---
 
@@ -300,7 +308,8 @@ DEFAULT_TEMPERATURE=0.7
 MAX_CONVERSATION_HISTORY=100
 ```
 
-Default provider/model priorities can be adjusted in `config.py`.
+Provider/model options are defined in `src/services/llm_service.py` (`LLMService.PROVIDERS`).
+Set your API keys in `.env` and the UI will list only providers with valid keys.
 
 ---
 
@@ -313,6 +322,26 @@ Convoscope is documented with **MkDocs**:
 - Before/after metrics and benchmarks  
 
 👉 Explore the docs: **[https://docs.barbhs.com/convoscope](https://docs.barbhs.com/convoscope)**
+
+---
+
+## 🎨 Theming (CSS Variables)
+
+The app defines a small set of CSS variables you can tweak for a cohesive theme (in `run_chat.py`). Example:
+
+```css
+:root {
+  --header-from: #0f172a; /* header gradient start */
+  --header-to:   #1e293b; /* header gradient end */
+  --tab-active-bg: #14b8a6; /* active tab background */
+  --tab-active-fg: #ffffff; /* active tab text */
+  --tab-inactive-bg: #475569; /* inactive tab background */
+  --tab-inactive-bg-2: #3b4a5a; /* inactive tab gradient end */
+  --tab-inactive-fg: #e5e7eb; /* inactive tab text */
+}
+```
+
+To try a calmer active color, change `--tab-active-bg` to `#0d9488` (teal‑600) or a brand color of your choice.
 
 ---
 

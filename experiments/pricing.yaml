@@ -1,0 +1,13 @@
+models:
+  openai/gpt-4o-mini:
+    input_per_1k: 0.15
+    output_per_1k: 0.60
+    currency: USD
+  anthropic/claude-3-haiku-20240307:
+    input_per_1k: 0.25
+    output_per_1k: 1.25
+    currency: USD
+  gemini/gemini-2.5-flash:
+    input_per_1k: 0.075
+    output_per_1k: 0.30
+    currency: USD

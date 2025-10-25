@@ -6,13 +6,14 @@ Automates the capture of key functionality demonstrations
 
 import asyncio
 import json
+import os
 from pathlib import Path
 from playwright.async_api import async_playwright
 import time
 
 # Configuration
 SCREENSHOTS_DIR = Path("docs/assets/screenshots")
-BASE_URL = "http://localhost:8501"
+BASE_URL = os.getenv("CONVOSCOPE_BASE_URL", "http://localhost:8501")
 VIEWPORT_SIZE = {"width": 1920, "height": 1080}
 MOBILE_VIEWPORT = {"width": 375, "height": 667}
 
@@ -40,11 +41,16 @@ async def capture_main_interface(page):
     # Wait for any dynamic content to load
     await asyncio.sleep(3)
     
-    # Take full page screenshot
+    # Take full interface screenshot (for docs)
+    await page.screenshot(
+        path=SCREENSHOTS_DIR / "02-full-interface.png",
+        full_page=True
+    )
+    
+    # Take main interface crop
     await page.screenshot(
         path=SCREENSHOTS_DIR / "01-main-interface.png",
-        full_page=True,
-        clip={"x": 0, "y": 0, "width": 1200, "height": 800}  # Crop to main content
+        clip={"x": 0, "y": 0, "width": 1200, "height": 800}
     )
     
     # Take hero section screenshot (for README)
@@ -63,54 +69,50 @@ async def capture_provider_switching(page):
     await wait_for_streamlit_ready(page)
     
     # Look for provider selector (adjust selector based on your UI)
-    provider_selectors = [
-        'select[aria-label*="provider"]',
-        'select[aria-label*="Provider"]', 
-        'div[data-testid="stSelectbox"] select',
-        '.stSelectbox select'
-    ]
-    
-    provider_selector = None
-    for selector in provider_selectors:
+    try:
+        # Try by label first
+        combo = None
         try:
-            await page.wait_for_selector(selector, timeout=5000)
-            provider_selector = selector
-            break
-        except:
-            continue
-    
-    if provider_selector:
-        # Capture initial state
-        await page.screenshot(
-            path=SCREENSHOTS_DIR / "02-provider-selection-initial.png",
-            clip={"x": 0, "y": 0, "width": 400, "height": 300}
-        )
-        
-        # Open dropdown
-        await page.click(provider_selector)
-        await asyncio.sleep(1)
-        
-        # Capture dropdown open
-        await page.screenshot(
-            path=SCREENSHOTS_DIR / "02-provider-dropdown-open.png",
-            clip={"x": 0, "y": 0, "width": 400, "height": 400}
-        )
-        
-        # Select different provider (if options available)
-        options = await page.query_selector_all(f"{provider_selector} option")
-        if len(options) > 1:
-            await page.select_option(provider_selector, index=1)
-            await asyncio.sleep(2)
-            
-            # Capture after selection
+            combo = await page.wait_for_selector('label:has-text("Provider:") >> xpath=following::div[@role="combobox"][1]', timeout=3000)
+        except Exception:
+            pass
+
+        # Fallback: locate text node for 'Provider:' then the next combobox in the sidebar
+        if combo is None:
+            try:
+                label_like = await page.wait_for_selector('xpath=(//div[@data-testid="stSidebar"]//*[contains(normalize-space(.), "Provider:")])[1]', timeout=4000)
+                combo = await page.wait_for_selector('xpath=(//div[@data-testid="stSidebar"]//*[contains(normalize-space(.), "Provider:")])[1]/following::div[@role="combobox"][1]', timeout=3000)
+            except Exception:
+                pass
+
+        # Last resort: any combobox in the sidebar
+        if combo is None:
+            container = await page.wait_for_selector('[data-testid="stSidebar"]', timeout=5000)
+            combo = await container.wait_for_selector('div[role="combobox"]', timeout=3000)
+
+        # Capture initial state (small crop around the selector)
+        box = await combo.bounding_box()
+        if box:
             await page.screenshot(
-                path=SCREENSHOTS_DIR / "02-provider-switched.png",
-                clip={"x": 0, "y": 0, "width": 400, "height": 300}
+                path=SCREENSHOTS_DIR / "02-provider-selection-initial.png",
+                clip={"x": max(box["x"] - 20, 0), "y": max(box["y"] - 20, 0), "width": box["width"] + 40, "height": box["height"] + 60}
             )
-        
+
+        # Open dropdown
+        await combo.click()
+        await asyncio.sleep(1)
+
+        # Capture dropdown open
+        # Enlarge crop to include dropdown menu below combobox
+        if box:
+            await page.screenshot(
+                path=SCREENSHOTS_DIR / "02-provider-selector-open.png",
+                clip={"x": max(box["x"] - 20, 0), "y": max(box["y"] - 20, 0), "width": max(box["width"] + 40, 320), "height": box["height"] + 240}
+            )
+
         print("✅ Provider switching screenshots captured")
-    else:
-        print("⚠️  Could not find provider selector - manual capture needed")
+    except Exception as e:
+        print(f"⚠️  Could not find provider selector - manual capture needed ({e})")
 
 async def capture_conversation_demo(page):
     """Demonstrate conversation functionality"""
@@ -120,23 +122,22 @@ async def capture_conversation_demo(page):
     await wait_for_streamlit_ready(page)
     
     # Look for chat input
+    # Prefer Streamlit chat input test id and textarea
     chat_input_selectors = [
-        'input[placeholder*="message"]',
-        'input[placeholder*="question"]',
-        'textarea[placeholder*="message"]',
-        '.stChatInput input',
-        '[data-testid="stChatInput"] input'
+        '[data-testid="stChatInput"] textarea',
+        '[data-testid="stChatInput"] input',
+        'textarea[placeholder="Ask a question:"]',
     ]
-    
+
     chat_input = None
     for selector in chat_input_selectors:
         try:
             await page.wait_for_selector(selector, timeout=5000)
             chat_input = selector
             break
-        except:
+        except Exception:
             continue
-    
+
     if chat_input:
         # Type a demo message
         demo_message = "Hello! Can you explain multi-provider architecture?"
@@ -192,15 +193,34 @@ async def capture_error_handling_demo(page):
         '.error-message'
     ]
     
+    # Prefer Streamlit alert box capture with a stable filename used in docs
+    try:
+        element = await page.wait_for_selector('[data-testid="stAlert"]', timeout=4000)
+        box = await element.bounding_box()
+        if box:
+            await page.screenshot(
+                path=SCREENSHOTS_DIR / "04-error-handling-stAlert.png",
+                clip={"x": box["x"], "y": box["y"], "width": box["width"], "height": box["height"]}
+            )
+            print("✅ Error alert screenshot captured (stAlert)")
+            return
+    except Exception:
+        pass
+    
+    # Fallback: try any known error selector
     for selector in status_selectors:
         try:
-            element = await page.wait_for_selector(selector, timeout=2000)
+            element = await page.wait_for_selector(selector, timeout=1500)
             if element:
-                await page.screenshot(
-                    path=SCREENSHOTS_DIR / f"04-error-handling-{selector.replace('[', '').replace(']', '').replace('.', '')}.png",
-                    clip={"x": 0, "y": 0, "width": 800, "height": 200}
-                )
-        except:
+                box = await element.bounding_box()
+                if box:
+                    await page.screenshot(
+                        path=SCREENSHOTS_DIR / "04-error-handling-generic.png",
+                        clip={"x": box["x"], "y": box["y"], "width": box["width"], "height": box["height"]}
+                    )
+                    print("✅ Generic error screenshot captured")
+                    return
+        except Exception:
             continue
     
     print("✅ Error handling UI screenshots captured")
@@ -223,6 +243,23 @@ async def capture_mobile_responsive(page):
     # Reset to desktop viewport
     await page.set_viewport_size(VIEWPORT_SIZE)
     print("✅ Mobile responsive screenshots captured")
+
+async def capture_sidebar_configuration(page):
+    """Capture the sidebar configuration panel screenshot"""
+    print("📸 Capturing sidebar configuration...")
+    await page.goto(BASE_URL)
+    await wait_for_streamlit_ready(page)
+    try:
+        sidebar = await page.wait_for_selector('[data-testid="stSidebar"]', timeout=5000)
+        box = await sidebar.bounding_box()
+        if box:
+            await page.screenshot(
+                path=SCREENSHOTS_DIR / "06-sidebar-configuration.png",
+                clip={"x": box["x"], "y": box["y"], "width": box["width"], "height": box["height"]}
+            )
+            print("✅ Sidebar configuration screenshot captured")
+    except Exception as e:
+        print(f"⚠️  Could not capture sidebar: {e}")
 
 async def main():
     """Main screenshot capture workflow"""
@@ -247,7 +284,7 @@ async def main():
     async with async_playwright() as p:
         # Launch browser
         browser = await p.chromium.launch(
-            headless=False,  # Set to True for headless mode
+            headless=True,
             args=['--start-maximized']
         )
         
@@ -265,6 +302,7 @@ async def main():
             await capture_conversation_demo(page)
             await capture_error_handling_demo(page)
             await capture_mobile_responsive(page)
+            await capture_sidebar_configuration(page)
             
             print("\n🎉 Screenshot capture complete!")
             print(f"📊 Check {SCREENSHOTS_DIR} for all captured images")

@@ -83,6 +83,7 @@ nav:
   - User Guide:
       - "Interface Guide": guides/interface-guide.md
       - "Conversation Management": guides/conversation-management.md
+      - "Model Comparison": guides/model-comparison.md
       - "Advanced Usage": guides/advanced-usage.md
       - "Troubleshooting": guides/troubleshooting.md
   - Configuration:
@@ -102,6 +103,7 @@ nav:
   - Project Details:
       - "Screenshots": project-details/screenshots.md
       - "Visual Assets Index": visual-assets-index.md
+      - "Blog: Multi‑LLM Evaluation": blog/multi-llm-evaluation.md
       - "Development Analysis": project-details/development-analysis.md
       - "Technical Metrics": project-details/technical-metrics.md
       - "Architecture Evolution": project-details/architecture-evolution.md
