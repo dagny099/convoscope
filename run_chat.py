@@ -20,6 +20,7 @@ import markdown
 
 # Import the multi-provider LLM service
 from src.services.llm_service import LLMService, LLMServiceError
+from pathlib import Path
 
 # From the official OpenAI package (for topic extraction only)
 import openai as OfficialOpenAI
@@ -124,7 +125,7 @@ st.set_page_config(
     page_title="I wonder...",
     page_icon="circle_icon.png",
     layout="wide",
-    initial_sidebar_state="auto",
+    initial_sidebar_state="collapsed",
     menu_items={
         "Get help": "https://www.streamlit.io/", 
         "Report a bug": "mailto:dagny099@gmail.com", 
@@ -136,6 +137,31 @@ st.markdown("""
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --header-from: #0f172a; /* slate-900 */
+            --header-to:   #1e293b; /* slate-800 */
+            --tab-active-bg: #14b8a6; /* teal-500 (tweaked) */
+            --tab-active-fg: #ffffff;
+            --tab-inactive-bg: #475569; /* slate-600 */
+            --tab-inactive-bg-2: #3b4a5a; /* subtle darker end */
+            --tab-inactive-fg: #e5e7eb; /* slate-200 */
+            --text-on-dark: #ffffff;
+            --text-muted-on-dark: rgba(255,255,255,0.9);
+            --panel-grad-from: #f8fafc;
+            --panel-grad-to: #e2e8f0;
+            --shadow-soft: rgba(100,116,139,0.3);
+            --border-color: #e2e8f0;
+            --sidebar-header-color: #374151;
+            --chip-bg: rgba(255,255,255,0.18);
+            --chip-border: rgba(255,255,255,0.28);
+            --chip-fg: #ffffff;
+            --divider: #555555;
+            --report-text: #333333;
+            --report-user-bg: #ECE4FF;
+            --report-bot-bg: #DCE1E9;
+            --report-paragraph: #5D5C61;
+            --heading-color: #1a202c;
+        }
         /* Global Styles */
         .stApp {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -144,35 +170,35 @@ st.markdown("""
         /* Modern Sidebar Styling */
         .settings-modal {
             padding: 1rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, var(--panel-grad-from) 0%, var(--panel-grad-to) 100%);
             border-radius: 0.75rem;
             margin-bottom: 1rem;
         }
 
         /* Button Enhancements */
         .stButton > button {
-            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+            background: linear-gradient(135deg, var(--tab-inactive-bg) 0%, var(--tab-inactive-bg-2) 100%);
             border: none;
             border-radius: 0.5rem;
-            color: white;
+            color: var(--tab-inactive-fg);
             font-weight: 500;
             transition: all 0.2s ease;
         }
 
         .stButton > button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         /* Selectbox Styling */
         .stSelectbox > div > div {
             border-radius: 0.5rem;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
         }
 
         /* Sidebar Section Headers */
         .sidebar .markdown-text-container h4 {
-            color: #374151;
+            color: var(--sidebar-header-color);
             font-weight: 600;
             margin-top: 1.5rem;
             margin-bottom: 0.5rem;
@@ -335,7 +361,7 @@ def sidebar_configuration():
 
     st.sidebar.markdown("""
         <div class="settings-modal">
-            <h3 style="margin-top: 0; color: #1a202c; font-weight: 600;">
+            <h3 style="margin-top: 0; color: var(--heading-color); font-weight: 600;">
                 <i class="fas fa-cog"></i> Settings
             </h3>
         </div>
@@ -347,14 +373,14 @@ def sidebar_configuration():
     # Conversation management
     col1, col2 = st.sidebar.columns(2)
     with col1:
-        if st.button("🆕 New Chat", use_container_width=True):
+        if st.button("🆕 New Chat", width='stretch'):
             st.session_state['conversation'] = list()
             if 'user_input' in st.session_state:
                 del st.session_state['user_input']
             st.success("Started new conversation")
 
     with col2:
-        if st.button("🔀 Random", use_container_width=True):
+        if st.button("🔀 Random", width='stretch'):
             # Randomize some settings
             st.session_state.priming_text = random.choice(list(priming_messages.values()))
             st.session_state.temperature = round(random.uniform(0.3, 0.9), 1)
@@ -658,17 +684,17 @@ def create_html_report(conversation, summary=None):
                     font-family: 'Merriweather', serif; /* A nice serif font for headers */
                     font-size: 20px;
                     font-weight: bold;
-                    color: #333;
+                    color: var(--report-text);
                     margin-bottom: 10px;
                 }
                 .user {
-                    background-color: #ECE4FF;
+                    background-color: var(--report-user-bg);
                     padding: 10px;
                     margin-bottom: 5px;
                     border-radius: 5px;
                 }
                 .bot {
-                    background-color: #DCE1E9;
+                    background-color: var(--report-bot-bg);
                     padding: 10px;
                     margin-bottom: 5px;
                     border-radius: 5px;
@@ -681,7 +707,7 @@ def create_html_report(conversation, summary=None):
                 }
                 p {
                     font-family: 'Lora', serif; /* Elegant serif font for paragraphs */
-                    color: #5D5C61; /* Medium gray hex code */
+                    color: var(--report-paragraph); /* Medium gray */
                 }
     
             </style>
@@ -708,7 +734,7 @@ def create_html_report(conversation, summary=None):
         html_content += f"""
                         <div class="summary">SUMMARY</div>
                         <div>{summary_html}</div>
-                        <hr style="border: none; border-top: 5px solid #555555;" />
+                        <hr style="border: none; border-top: 5px solid var(--divider);" />
                         <div class="header">Conversation</div>
                         <details>
                         <summary>Show/Hide the chat history</summary>
@@ -735,12 +761,12 @@ def create_html_report(conversation, summary=None):
                 <div class="user"><p><strong><i class="fa fa-user-circle"></i> YOU: </strong> {chat['user']}</p></div>
                 <div class="bot"><p><strong><i class="fa fa-robot"></i> AI: </strong> {tmpAItext}</p></div>
             </div>
-            <hr style="border: none; border-top: 1px solid #555555;" /> 
+            <hr style="border: none; border-top: 1px solid var(--divider);" /> 
         """
 
     html_content = f"""{html_content}
         </details>
-        <hr style="border: none; border-top: 10px solid #555555;" />
+        <hr style="border: none; border-top: 10px solid var(--divider);" />
         </body>
     </html>
     """
@@ -751,91 +777,50 @@ def create_html_report(conversation, summary=None):
 def render_modern_header():
     """Render the modern header with gradient background and professional navigation"""
 
-    # Get current provider for status chip (using correct session state key)
-    current_provider = st.session_state.get('llm_provider', 'openai')
-    provider_status = "✅" if st.session_state.llm_service.PROVIDERS[current_provider].available else "❌"
-
     # Initialize navigation state if not exists
     if 'current_view' not in st.session_state:
-        st.session_state.current_view = 'chat'
+        st.session_state.current_view = 'compare'
 
-    # Render header with gradient background
+    # Build provider availability chips (OpenAI, Anthropic, Gemini)
+    service = st.session_state.llm_service
+    icon_map = {"openai": "", "anthropic": "", "google": ""}
+    chips = []
+    for name, cfg in service.PROVIDERS.items():
+        status = "✅" if cfg.available else "❌"
+        chips.append(f"<span style='background:var(--chip-bg);border:1px solid var(--chip-border);padding:0.25rem 0.6rem;border-radius:1rem;margin-right:0.35rem;color:var(--chip-fg);font-size:0.8rem;white-space:nowrap;'>{status} {icon_map.get(name,'')} {name.title()}</span>")
+    chips_html = "".join(chips)
+
+    # Render header with tighter padding and provider chips
     st.markdown(f"""
-        <div style="
-            background: linear-gradient(135deg, #64748b 0%, #475569 100%);
-            margin: -1rem -1rem 2rem -1rem;
-            padding: 1.5rem 2rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        ">
-            <div style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                max-width: 1200px;
-                margin: 0 auto;
-            ">
-                <div style="
-                    display: flex;
-                    align-items: center;
-                    gap: 1rem;
-                ">
-                    <div style="
-                        font-size: 2rem;
-                        font-weight: 700;
-                        color: white;
-                        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-                        letter-spacing: -0.02em;
-                    ">🔍 Convoscope</div>
-                    <div style="
-                        background: rgba(255, 255, 255, 0.2);
-                        backdrop-filter: blur(10px);
-                        padding: 0.5rem 1rem;
-                        border-radius: 2rem;
-                        color: white;
-                        font-size: 0.85rem;
-                        font-weight: 500;
-                        border: 1px solid rgba(255, 255, 255, 0.3);
-                    ">{provider_status} {current_provider.title()}</div>
+        <div style="background: linear-gradient(135deg, var(--header-from) 0%, var(--header-to) 100%);margin: -1rem -1rem 1.2rem -1rem;padding: 1.0rem 1.25rem;border-radius: 1rem;box-shadow: 0 3px 5px rgba(0,0,0,0.08);">
+            <div style="display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;">
+                <div style="display:flex;align-items:center;gap:0.75rem;">
+                    <div style="font-size:1.8rem;font-weight:700;color:var(--text-on-dark);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:-0.02em;">Convoscope</div>
+                    <div>{chips_html}</div>
                 </div>
-                <div style="
-                    display: flex;
-                    gap: 1rem;
-                    align-items: center;
-                ">
-                    <div style="
-                        color: rgba(255, 255, 255, 0.9);
-                        font-size: 0.9rem;
-                        font-weight: 500;
-                    ">Multi-Provider AI Evaluation Platform</div>
-                </div>
+                <div style="color:var(--text-muted-on-dark);font-size:0.88rem;font-weight:500;">Multi-Provider AI Evaluation Platform</div>
             </div>
         </div>
     """, unsafe_allow_html=True)
 
-    # Navigation buttons
-    col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
+    # Navigation tabs (active tab styled, others clickable)
+    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 1, 1])
+    active = st.session_state.get('current_view', 'compare')
 
-    with col1:
-        if st.button("💬 Chat", key="nav_chat", use_container_width=True):
-            st.session_state.current_view = 'chat'
-            st.rerun()
+    def nav_tab(col, view_name, label, icon, key):
+        with col:
+            if active == view_name:
+                st.markdown(f"<div style='background:var(--tab-active-bg);color:var(--tab-active-fg);padding:0.45rem 0.8rem;border-radius:0.5rem;font-weight:600;text-align:center'>{icon} {label}</div>", unsafe_allow_html=True)
+            else:
+                if st.button(f"{icon} {label}", key=key, width='stretch'):
+                    st.session_state.current_view = view_name
+                    st.rerun()
 
-    with col2:
-        if st.button("📚 History", key="nav_history", use_container_width=True):
-            st.session_state.current_view = 'history'
-            st.rerun()
-
-    with col3:
-        if st.button("🏷️ Topics", key="nav_topics", use_container_width=True):
-            st.session_state.current_view = 'topics'
-            st.rerun()
-
-    with col4:
-        comparison_text = "🔀 Compare" if not st.session_state.get('comparison_mode', False) else "🔄 Single"
-        if st.button(comparison_text, key="nav_comparison", use_container_width=True):
-            st.session_state.comparison_mode = not st.session_state.get('comparison_mode', False)
-            st.rerun()
+    nav_tab(col1, 'compare', 'Compare', '🔀', 'nav_compare')
+    nav_tab(col2, 'chat', 'Chat', '💬', 'nav_chat')
+    nav_tab(col3, 'history', 'History', '📚', 'nav_history')
+    nav_tab(col4, 'topics', 'Topics', '🏷️', 'nav_topics')
+    nav_tab(col5, 'results', 'Results', '📊', 'nav_results')
 
 
 # -------------------------------------------- #
@@ -851,7 +836,7 @@ def main():
     # Session state is now initialized in sidebar_configuration()
 
     # MAIN LAYOUT: Conditional rendering based on navigation state
-    current_view = st.session_state.get('current_view', 'chat')
+    current_view = st.session_state.get('current_view', 'compare')
 
     # Chat functionality
     if current_view == 'chat':
@@ -959,6 +944,14 @@ def main():
                                             type="primary"
                                         )
 
+    # Compare functionality
+    elif current_view == 'compare':
+        render_compare_view()
+
+    # Results viewer functionality
+    elif current_view == 'results':
+        render_results_view()
+
     # History functionality
     elif current_view == 'history':
         st.header("Conversation History")
@@ -984,9 +977,450 @@ def main():
                     st.markdown(
                         f"""
                         </div>
-                        <hr style="border: none; border-top: 2px solid #555555;" />  <!-- Divider between conversations -->
+                        <hr style="border: none; border-top: 2px solid var(--divider);" />  <!-- Divider between conversations -->
                         """,unsafe_allow_html=True)
 
+
+def render_compare_view():
+    """Render side-by-side model comparison with blind scoring.
+
+    Design goals:
+    - Keep it simple: single prompt -> 2–4 model responses.
+    - Blind by default: label columns A/B/C/...; reveal identities on toggle.
+    - JSONL logging for transparency and later analysis.
+    """
+    from src.experiments.compare import collect_comparisons
+    from src.experiments.io import append_jsonl, RESULTS_PATH, sha256_text
+
+    st.markdown("### 🔀 Model Comparison")
+
+    # Default compare cache setup
+    DEFAULT_COMPARE_QUESTION = "Why is the sky blue -- Explain it to a blind person."
+    DEFAULT_CACHE_PATH = Path("experiments/default_compare_cache.json")
+    # Gate display of results until user clicks "Run compare"
+    if 'compare_show_results' not in st.session_state:
+        st.session_state.compare_show_results = False
+
+    # Slightly larger textarea font for better readability
+    st.markdown("""
+        <style>
+            .stTextArea textarea { font-size: 1.05rem; }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Lay out inputs in two columns (2/3 for prompt, 1/3 for controls)
+    left, right = st.columns([2, 1])
+
+    with left:
+        # Ensure prompt state exists; preload sample prompt by default
+        if 'compare_prompt' not in st.session_state:
+            st.session_state.compare_prompt = DEFAULT_COMPARE_QUESTION
+        prompt_text = st.text_area("Enter Prompt (sample prompt loaded by default):", key="compare_prompt", height=200)
+        # Placeholder for a post-run notice (shown only after clicking Run)
+        cache_notice_placeholder = st.empty()
+
+    with right:
+        blind_default = True
+        # Provider/model selection (default 3)
+        service = st.session_state.llm_service
+        # Build list of available combos from configured providers
+        available = []
+        for pname, cfg in service.PROVIDERS.items():
+            models = cfg.models if cfg.available else []
+            for m in models:
+                available.append(f"{pname}:{m}")
+
+        # Defaults: lightest model from each vendor
+        defaults = []
+        for pname, m in [("openai", "gpt-4o-mini"), ("anthropic", "claude-3-haiku-20240307"), ("google", "gemini-2.5-flash")]:
+            label = f"{pname}:{m}"
+            if label in available:
+                defaults.append(label)
+
+        selected = st.multiselect(
+            "Models to compare (2–4)",
+            options=available,
+            default=defaults,
+            help="Choose up to 4 provider/model pairs"
+        )
+
+        blind_mode = st.checkbox("Blind scoring (hide identities)", value=blind_default, help="Show A/B/C labels until you reveal identities.")
+        temperature = st.slider("Temperature", 0.0, 1.0, value=0.7, step=0.1)
+        st.caption("Temperature is applied uniformly to all selected models. Note: OpenAI, Anthropic, and Gemini accept temperature; some models may clamp or ignore extreme values.")
+
+    # If no cached results exist on first view, try to auto-generate once with defaults
+    # We no longer auto-run or auto-display cached results on page load
+
+    # Validation
+    if len(selected) < 2:
+        st.info("Select at least 2 models to compare.")
+
+    # Run compare button (bottom of section)
+    run_cols = st.columns([1, 1, 1])
+    with run_cols[1]:
+        run_clicked = st.button("Run compare", type="primary", disabled=(len(selected) < 2 or not prompt_text.strip()))
+
+    if run_clicked:
+        combos = [(s.split(":")[0], s.split(":")[1]) for s in selected]
+
+        # Cache hit: if default prompt and cache exists, and combos+temperature match
+        used_cache = False
+        if (
+            st.session_state.compare_prompt.strip() == DEFAULT_COMPARE_QUESTION
+            and DEFAULT_CACHE_PATH.exists()
+        ):
+            try:
+                import json as _json
+                cached = _json.loads(DEFAULT_CACHE_PATH.read_text(encoding='utf-8'))
+                cached_items = cached.get("result", {}).get("results", []) if isinstance(cached.get("result"), dict) else cached.get("result", [])
+                cached_pairs = {(it.get("provider"), it.get("model")) for it in cached_items}
+                selected_pairs = set(combos)
+                # Temperature check: require all cached items to match selected temperature
+                temps = {round(float(it.get("temperature", 0.7)), 3) for it in cached_items}
+                temp_ok = (len(temps) == 1 and round(temperature, 3) in temps)
+                if cached_pairs == selected_pairs and temp_ok:
+                    # Serve cached results without re-calling providers
+                    st.session_state["compare_last_run"] = {
+                        **cached,
+                        "blind": blind_mode,
+                    }
+                    st.session_state.compare_show_results = True
+                    cache_notice_placeholder.info("Showing cached default comparison to avoid repeated API calls. Scores and preferences are reset; identities are blind by default.")
+                    used_cache = True
+                    # Optionally log a cache hit record (no duplicate results)
+                    from src.experiments.io import append_jsonl as _append, RESULTS_PATH as _R, sha256_text as _sha
+                    _append(_R, {
+                        "version": 1,
+                        "type": "cache_hit",
+                        "timestamp": datetime.utcnow().isoformat() + "Z",
+                        "run_id": cached.get("run_id"),
+                        "prompt_id": _sha(DEFAULT_COMPARE_QUESTION),
+                        "note": "Served from default cache",
+                    })
+            except Exception:
+                used_cache = False
+
+        if not used_cache:
+            with st.spinner("Comparing models..."):
+                result = collect_comparisons(
+                    service=service,
+                    prompt_text=st.session_state.compare_prompt.strip(),
+                    combos=combos,
+                    temperature=temperature,
+                    blind=blind_mode,
+                    priming_text=st.session_state.get("priming_text", "You are a helpful assistant."),
+                )
+
+        if not used_cache:
+            # Persist raw results (one record per model)
+            run_ts = datetime.utcnow().isoformat() + "Z"
+            run_id = f"{run_ts}_adhoc"
+            p_hash = sha256_text(st.session_state.compare_prompt.strip())
+            for item in result["results"]:
+                record = {
+                    "version": 1,
+                    "type": "result",
+                    "timestamp": run_ts,
+                    "run_id": run_id,
+                    "prompt_id": p_hash,
+                    "prompt_text": st.session_state.compare_prompt.strip(),
+                    "blind_label": item.get("blind_label"),
+                    "provider": item["provider"],
+                    "model": item["model"],
+                    "temperature": item["temperature"],
+                    "latency_ms": item["latency_ms"],
+                    "input_tokens": item["input_tokens_est"],
+                    "output_tokens": item["output_tokens_est"],
+                    "estimated_cost_usd": item["estimated_cost_usd"],
+                    "response_text": item["response_text"],
+                    "status": item["status"],
+                    "error": item["error"],
+                    "blind": bool(blind_mode),
+                }
+                append_jsonl(RESULTS_PATH, record)
+
+            # Update session only once per run
+            st.session_state["compare_last_run"] = {
+                "run_id": run_id,
+                "prompt_hash": p_hash,
+                "prompt_text": st.session_state.compare_prompt.strip(),
+                "blind": blind_mode,
+                "result": result,
+            }
+            # Mark that results can be displayed now
+            st.session_state.compare_show_results = True
+
+            # Update default cache if this matches the default question
+            if st.session_state.compare_prompt.strip() == DEFAULT_COMPARE_QUESTION:
+                try:
+                    import json as _json
+                    DEFAULT_CACHE_PATH.write_text(_json.dumps(st.session_state["compare_last_run"], ensure_ascii=False), encoding='utf-8')
+                except Exception:
+                    pass
+                # Show notice only after user clicks Run compare
+                cache_notice_placeholder.info("Showing cached default comparison to avoid repeated API calls. Scores and preferences are reset; identities are blind by default.")
+
+    # Display last results if present
+    last = st.session_state.get("compare_last_run")
+    if last and st.session_state.get("compare_show_results"):
+        result = last["result"]
+        reveal = st.toggle("Reveal identities", value=False)
+
+        cols = st.columns(len(result["results"]))
+        for i, item in enumerate(result["results"]):
+            with cols[i]:
+                label = item["blind_label"]
+                title = f"### Response {label}"
+                if reveal:
+                    title += f" — {item['provider']}/{item['model']}"
+                st.markdown(title)
+
+                st.write(f"Latency: {item['latency_ms']} ms")
+                st.write(f"Est. cost: ${item['estimated_cost_usd']}")
+                st.write("")
+                st.markdown(item.get("response_text") or "_(no response)_")
+
+        st.markdown("---")
+        st.markdown("#### Score the responses")
+        st.caption("Blind scoring reduces bias; reveal identities after you’ve scored.")
+
+        # Winner quick-pick
+        labels = [r["blind_label"] for r in result["results"]]
+        winner = st.radio("Select a winner", options=labels, horizontal=True, key="compare_winner")
+
+        # Detailed sliders per label
+        score_entries = []
+        for label in labels:
+            with st.expander(f"Scores for {label}"):
+                s_correct = st.slider(f"{label} - Correctness", 1, 5, 3)
+                s_useful = st.slider(f"{label} - Usefulness", 1, 5, 3)
+                s_clarity = st.slider(f"{label} - Clarity", 1, 5, 3)
+                s_safety = st.slider(f"{label} - Safety", 1, 5, 3)
+                s_overall = st.slider(f"{label} - Overall", 1, 5, 3)
+                note = st.text_area(f"{label} - Notes", height=60)
+                score_entries.append({
+                    "label": label,
+                    "scores": {
+                        "correctness": s_correct,
+                        "usefulness": s_useful,
+                        "clarity": s_clarity,
+                        "safety": s_safety,
+                        "overall": s_overall,
+                    },
+                    "notes": note,
+                    "winner": (label == winner),
+                })
+
+        if st.button("Save scores", type="primary"):
+            run_id = last["run_id"]
+            ts = datetime.utcnow().isoformat() + "Z"
+            for entry in score_entries:
+                rec = {
+                    "version": 1,
+                    "type": "score",
+                    "timestamp": ts,
+                    "run_id": run_id,
+                    "prompt_id": last["prompt_hash"],
+                    "blind_label": entry["label"],
+                    "scores": entry["scores"],
+                    "notes": entry["notes"],
+                    "winner": bool(entry["winner"]),
+                    "scored_by": "human",
+                }
+                append_jsonl(RESULTS_PATH, rec)
+            st.success("Scores saved.")
+
+        # Preference mode (pairwise A/B only)
+        st.markdown("---")
+        st.markdown("#### Preference mode (pairwise A/B)")
+        st.caption("Pick a winner for each pair. Use 'Tie/Skip' if you can't decide. Best practice: keep identities hidden while choosing.")
+
+        # Build label -> provider/model map for logging
+        label_to_combo = {r["blind_label"]: {"provider": r["provider"], "model": r["model"]} for r in result["results"]}
+
+        # Generate all unordered label pairs
+        labels = [r["blind_label"] for r in result["results"]]
+        pairs = []
+        for i in range(len(labels)):
+            for j in range(i + 1, len(labels)):
+                pairs.append((labels[i], labels[j]))
+
+        pref_decisions = {}
+        for a, b in pairs:
+            choice = st.radio(
+                label=f"{a} vs {b}",
+                options=[f"{a} wins", f"{b} wins", "Tie/Skip"],
+                horizontal=True,
+                key=f"pref_{a}_{b}"
+            )
+            pref_decisions[(a, b)] = choice
+
+        if st.button("Save preferences"):
+            run_id = last["run_id"]
+            ts = datetime.utcnow().isoformat() + "Z"
+            saved = 0
+            for (a, b), choice in pref_decisions.items():
+                if choice == "Tie/Skip":
+                    continue
+                winner_label = a if choice.startswith(a) else b
+                rec = {
+                    "version": 1,
+                    "type": "preference",
+                    "timestamp": ts,
+                    "run_id": run_id,
+                    "prompt_id": last["prompt_hash"],
+                    "pair": [a, b],
+                    "winner_label": winner_label,
+                    "left": {"label": a, **label_to_combo[a]},
+                    "right": {"label": b, **label_to_combo[b]},
+                    "scored_by": "human",
+                }
+                append_jsonl(RESULTS_PATH, rec)
+                saved += 1
+            if saved:
+                st.success(f"Saved {saved} preference entries.")
+            else:
+                st.info("No preferences selected.")
+
+
+def render_results_view():
+    """Simple results viewer with filters and CSV export.
+
+    - Loads experiments/results.jsonl and merges results with scores.
+    - Adds prompt tags when present in experiments/prompts.yaml (by prompt hash).
+    - Exports two CSVs: results_with_scores.csv and preferences.csv.
+    """
+    import pandas as pd
+    from pathlib import Path
+    from src.experiments.io import read_jsonl, RESULTS_PATH, build_prompt_index
+
+    st.markdown("### 📊 Results Viewer")
+    st.markdown("This view consolidates all comparison runs. Use the filters to narrow by date, provider/model, and prompt tags. Each row shows a single model’s response with basic metrics and any latest human score.")
+
+    with st.spinner("Loading results..."):
+        data = read_jsonl(RESULTS_PATH)
+    if not data:
+        st.info("No results found yet. Run a comparison first.")
+        return
+
+    # Split by record type
+    df = pd.DataFrame(data)
+    results_df = df[df.get("type").fillna("result") == "result"].copy()
+    scores_df = df[df.get("type") == "score"].copy()
+    prefs_df = df[df.get("type") == "preference"].copy()
+
+    # Parse timestamps and normalize to naive (no tz) for consistent comparisons
+    for frame in (results_df, scores_df, prefs_df):
+        if not frame.empty:
+            ts = pd.to_datetime(frame["timestamp"], utc=True, errors="coerce")
+            # drop timezone to match date input (naive)
+            frame["timestamp"] = ts.dt.tz_convert(None)
+
+    # Provider/model convenience columns
+    if not results_df.empty:
+        results_df["provider_model"] = results_df["provider"] + "/" + results_df["model"]
+
+    # Add tags from prompt set index
+    prompts_path = Path("experiments/prompts.yaml")
+    pindex = build_prompt_index(prompts_path)
+    if not results_df.empty:
+        results_df["tags"] = results_df["prompt_id"].map(lambda h: pindex.get(h, {}).get("tags"))
+
+    # Prepare defaults for filters from session state
+    min_ts = results_df["timestamp"].min()
+    max_ts = results_df["timestamp"].max()
+    default_dates = (
+        (min_ts.date() if pd.notnull(min_ts) else None),
+        (max_ts.date() if pd.notnull(max_ts) else None),
+    )
+    date_range = st.session_state.get("results_date_range", default_dates)
+
+    providers = sorted(results_df["provider_model"].dropna().unique().tolist())
+    selected_models = st.session_state.get("results_selected_models", providers)
+
+    all_tags = sorted({t for lst in results_df["tags"].dropna().tolist() for t in lst}) if "tags" in results_df else []
+    selected_tags = st.session_state.get("results_selected_tags", all_tags)
+
+    # Apply filters for the preview above
+    if isinstance(date_range, (list, tuple)) and all(date_range):
+        start_dt = pd.to_datetime(str(date_range[0]))
+        end_dt = pd.to_datetime(str(date_range[1])) + pd.Timedelta(days=1)
+        mask = (results_df["timestamp"] >= start_dt) & (results_df["timestamp"] < end_dt)
+        results_df = results_df[mask]
+    if selected_models:
+        results_df = results_df[results_df["provider_model"].isin(selected_models)]
+    if selected_tags:
+        results_df = results_df[results_df["tags"].apply(lambda x: bool(set(selected_tags).intersection(set(x))) if isinstance(x, list) else False)]
+
+    # Merge last score per (run_id, prompt_id, blind_label)
+    if not scores_df.empty:
+        scores_df = scores_df.sort_values("timestamp").groupby(["run_id", "prompt_id", "blind_label"], as_index=False).tail(1)
+        merged = results_df.merge(
+            scores_df[["run_id", "prompt_id", "blind_label", "scores", "notes", "winner"]],
+            on=["run_id", "prompt_id", "blind_label"], how="left"
+        )
+    else:
+        merged = results_df.copy()
+
+    st.markdown("#### Results (preview)")
+    st.caption("Columns: timestamp (when recorded), prompt_text (the question), blind_label (A/B/C used during scoring), provider_model (which model answered), latency_ms (wall‑clock time), estimated_cost_usd (based on pricing.yaml), scores/notes (your latest human rubric), winner (quick pick).")
+    show_cols = [
+        "timestamp", "prompt_text", "blind_label", "provider_model", "latency_ms", "estimated_cost_usd",
+        "scores", "winner", "notes"
+    ]
+    for c in show_cols:
+        if c not in merged.columns:
+            merged[c] = None
+    st.dataframe(merged[show_cols].sort_values("timestamp", ascending=False).head(200), width='stretch')
+
+    # Exports
+    st.markdown("---")
+    st.markdown("#### Export")
+    st.caption("Export your data for deeper analysis, dashboards, or sharing. results_with_scores.csv merges model outputs with your latest human scores. preferences.csv contains A/B choices for ranking methods like Elo/Bradley–Terry.")
+    csv_results = merged.to_csv(index=False).encode("utf-8")
+    st.download_button("Download results_with_scores.csv", csv_results, file_name="results_with_scores.csv", mime="text/csv")
+
+    if not prefs_df.empty:
+        # Ensure useful columns exist
+        pref_cols = [
+            "timestamp", "run_id", "prompt_id", "pair", "winner_label",
+            "left", "right", "scored_by"
+        ]
+        for c in pref_cols:
+            if c not in prefs_df.columns:
+                prefs_df[c] = None
+        # Flatten left/right details for export
+        def flat_side(x, key):
+            try:
+                return x.get(key, {}).get("provider"), x.get(key, {}).get("model"), x.get(key, {}).get("label")
+            except Exception:
+                return None, None, None
+        left_provider, left_model, left_label = zip(*prefs_df.apply(lambda r: flat_side(r, "left"), axis=1))
+        right_provider, right_model, right_label = zip(*prefs_df.apply(lambda r: flat_side(r, "right"), axis=1))
+        prefs_export = prefs_df.copy()
+        prefs_export["left_provider"] = left_provider
+        prefs_export["left_model"] = left_model
+        prefs_export["left_label"] = left_label
+        prefs_export["right_provider"] = right_provider
+        prefs_export["right_model"] = right_model
+        prefs_export["right_label"] = right_label
+        prefs_export = prefs_export[[
+            "timestamp", "run_id", "prompt_id", "pair", "winner_label",
+            "left_provider", "left_model", "left_label",
+            "right_provider", "right_model", "right_label",
+            "scored_by",
+        ]]
+        st.dataframe(prefs_export.sort_values("timestamp", ascending=False).head(200), width='stretch')
+        st.download_button("Download preferences.csv", prefs_export.to_csv(index=False).encode("utf-8"), file_name="preferences.csv", mime="text/csv")
+    else:
+        st.info("No preference entries yet. Save some from the Compare view.")
+
+    # Filters (moved below the table)
+    st.markdown("---")
+    st.markdown("#### Filters")
+    date_input = st.date_input("Date range", value=date_range, key="results_date_range")
+    model_input = st.multiselect("Filter models", options=providers, default=selected_models, key="results_selected_models")
+    tag_input = st.multiselect("Filter tags", options=all_tags, default=selected_tags, key="results_selected_tags")
 
 if __name__ == "__main__":
     main()
