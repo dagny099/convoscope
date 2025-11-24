@@ -84,8 +84,8 @@ pytest tests/integration/ -v  # Integration tests only
 ### Multi-Provider Configuration  
 Located in `src/services/llm_service.py`:
 - **OpenAI**: `gpt-4o-mini`, `gpt-4o`, `gpt-3.5-turbo`
-- **Anthropic**: `claude-3-5-sonnet`, `claude-3-haiku`  
-- **Google**: `gemini-1.5-pro`, `gemini-pro`
+- **Anthropic**: `claude-3-5-sonnet`, `claude-3-haiku`
+- **Google**: `gemini-1.5-pro-latest`, `gemini-1.0-pro-latest`
 - **Fallback Logic**: Automatic provider switching with exponential backoff
 - **Health Checks**: Provider availability monitoring
 

@@ -43,7 +43,7 @@ class LLMService:
         ),
         'google': LLMProvider(
             name='google',
-            models=['gemini-1.5-pro', 'gemini-pro'],
+            models=['gemini-1.5-pro-latest', 'gemini-1.0-pro-latest'],
             env_key='GEMINI_API_KEY'
         )
     }
@@ -118,7 +118,8 @@ class LLMService:
         
         # Handle different provider model naming conventions
         if provider == 'google':
-            # Google AI Studio uses 'gemini/' prefix (not 'google/')
+            # Google AI Studio uses 'gemini/' prefix (not 'google/' or 'vertex_ai/')
+            # This ensures litellm uses Google AI Studio API, not Vertex AI
             model_name = f"gemini/{model}"
         else:
             # Other providers use provider/model format
